@@ -145,7 +145,7 @@ body.custom-cursor-enabled .project-card {
   position: fixed;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 10000;
+  z-index: 999999;
   opacity: 0;
   transition: opacity 0.3s ease, transform 0.15s, background-color 0.15s;
 }
@@ -158,7 +158,7 @@ body.custom-cursor-enabled .project-card {
   position: fixed;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 9999;
+  z-index: 999998;
   opacity: 0;
   transition: opacity 0.3s ease, 
               width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
@@ -1748,15 +1748,17 @@ body:not(.sound-muted) .eq-bar {
 
 /* GitHub Contributions Calendar Bento */
 .github-chart-card {
-  background-color: var(--card);
+  background: radial-gradient(circle at 50% 50%, rgba(255, 102, 0, 0.03) 0%, var(--card) 85%);
   border: 1px solid var(--border);
+  border-left: 3px solid var(--accent-cyan);
   border-radius: 8px;
   padding: 1.2rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   margin-top: 1rem;
+  position: relative;
 }
 
 .github-chart-wrap {
@@ -1764,7 +1766,14 @@ body:not(.sound-muted) .eq-bar {
   overflow-x: auto;
   display: flex;
   justify-content: flex-start;
-  padding-block: 4px;
+  padding: 12px;
+  background-color: rgba(0, 0, 0, 0.12);
+  border: 1px dashed var(--border);
+  border-radius: 6px;
+}
+
+[data-theme="light"] .github-chart-wrap {
+  background-color: rgba(0, 0, 0, 0.02);
 }
 
 .github-chart-img {
