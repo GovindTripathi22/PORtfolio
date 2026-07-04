@@ -728,6 +728,103 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Project Details Modal Database and Event Handlers
+  const projectDatabase = {
+    prismhand: {
+      title: "PrismHand",
+      category: "WebGL / MediaPipe",
+      desc: "An interactive creative coding installation exploring real-time fingertip tracking via MediaPipe. Visitors can paint, sculpt, and distort coordinates directly on a flowing, particle-based WebGL canvas with spring-physics calculations.",
+      tech: ["WebGL", "MediaPipe", "React", "Vanilla CSS", "Three.js"],
+      img: "images/prismhand.jpg",
+      github: "https://github.com/GovindTripathi22/PORtfolio",
+      demo: "https://github.com/GovindTripathi22/PORtfolio"
+    },
+    voyage: {
+      title: "Voyage",
+      category: "Full Stack Planner",
+      desc: "A smart AI-driven travel itinerary generator. The application queries custom LLM backends to generate optimal route directions, hotel stays, and dining choices based on user budgets, displaying active routes over an interactive map interface.",
+      tech: ["Next.js", "Spring Boot", "MySQL", "OpenAI API", "MapBox"],
+      img: "images/voyage.jpg",
+      github: "https://github.com/GovindTripathi22/PORtfolio",
+      demo: "https://github.com/GovindTripathi22/PORtfolio"
+    },
+    obsidian: {
+      title: "Obsidian Workspace",
+      category: "Canvas Workspace",
+      desc: "An offline-first, markdown-based desktop editor and workspace setup. It indexes local notes to dynamically build a visual 3D node connections graph of thoughts, ideas, and wiki links, built with focus on speed and local data ownership.",
+      tech: ["Electron", "Node.js", "D3.js", "Markdown", "Webpack"],
+      img: "images/obsidian.jpg",
+      github: "https://github.com/GovindTripathi22/PORtfolio",
+      demo: "https://github.com/GovindTripathi22/PORtfolio"
+    },
+    ocms: {
+      title: "OCMS Portal",
+      category: "Java REST API",
+      desc: "A robust B2B College Management administrative dashboard. Manages student databases, faculty assignments, schedule tables, and marks enrollment metrics via secure RESTful APIs fortified by Spring Security and JSON Web Token auth.",
+      tech: ["Java", "Spring Boot", "JWT", "PostgreSQL", "React"],
+      img: "images/ocms.jpg",
+      github: "https://github.com/GovindTripathi22/PORtfolio",
+      demo: "https://github.com/GovindTripathi22/PORtfolio"
+    }
+  };
+
+  const projectCards = document.querySelectorAll('[data-project-id]');
+  const modal = document.getElementById('project-modal');
+  const modalClose = document.getElementById('modal-close');
+  const modalBackdrop = document.getElementById('modal-backdrop');
+
+  if (modal && projectCards.length > 0) {
+    projectCards.forEach(card => {
+      card.addEventListener('click', (e) => {
+        e.preventDefault();
+        const projId = card.getAttribute('data-project-id');
+        const data = projectDatabase[projId];
+        
+        if (data) {
+          document.getElementById('modal-proj-title').textContent = data.title;
+          document.getElementById('modal-proj-tag').textContent = data.category;
+          document.getElementById('modal-proj-desc').textContent = data.desc;
+          
+          const imgEl = document.getElementById('modal-proj-img');
+          if (imgEl) imgEl.src = data.img;
+          
+          const githubEl = document.getElementById('modal-github-link');
+          const demoEl = document.getElementById('modal-demo-link');
+          if (githubEl) githubEl.href = data.github;
+          if (demoEl) demoEl.href = data.demo;
+          
+          const techContainer = document.getElementById('modal-proj-tech');
+          if (techContainer) {
+            techContainer.innerHTML = '';
+            data.tech.forEach(t => {
+              const span = document.createElement('span');
+              span.className = 'tech-tag clickable-element';
+              span.textContent = t;
+              techContainer.appendChild(span);
+            });
+            // Rebind hover triggers for the new tags
+            attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
+          }
+          
+          playSlideSound();
+          modal.classList.add('active');
+          modal.setAttribute('aria-hidden', 'false');
+          document.body.style.overflow = 'hidden';
+        }
+      });
+    });
+
+    function closeModal() {
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      playKeyboardTick();
+    }
+
+    if (modalClose) modalClose.addEventListener('click', closeModal);
+    if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
+  }
+
   // Run on start
   initVisitorCounter();
   fetchGithubStats();
