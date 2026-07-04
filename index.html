@@ -40,8 +40,20 @@
   <div class="page-shell">
     
     <!-- Left & Right Side Margin Rails -->
-    <div class="side-rail side-rail-left" aria-hidden="true"></div>
-    <div class="side-rail side-rail-right" aria-hidden="true"></div>
+    <div class="side-rail side-rail-left" aria-hidden="true">
+      <div class="junction-node" style="top: 0;"></div>
+      <div class="junction-node" style="top: 100px;"></div>
+      <div class="junction-node" style="top: 220px;"></div>
+      <div class="junction-node" style="top: 50%;"></div>
+      <div class="junction-node" style="top: 80%;"></div>
+    </div>
+    <div class="side-rail side-rail-right" aria-hidden="true">
+      <div class="junction-node" style="top: 0;"></div>
+      <div class="junction-node" style="top: 100px;"></div>
+      <div class="junction-node" style="top: 220px;"></div>
+      <div class="junction-node" style="top: 50%;"></div>
+      <div class="junction-node" style="top: 80%;"></div>
+    </div>
     
     <div class="content-strip">
       <!-- Top Dot Grid Matrix Band -->
@@ -98,7 +110,12 @@
             <!-- Controls on Right -->
             <div class="header-controls-column" style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; margin-left:auto;">
               <div class="header-controls" style="display:flex; gap:0.5rem; align-items:center;">
-                <button class="control-btn clickable-element" id="mute-toggle" aria-label="Toggle Audio">
+                <button class="control-btn clickable-element" id="mute-toggle" aria-label="Toggle Audio" style="display:flex; align-items:center; gap:0.4rem;">
+                  <div class="audio-equalizer-bars">
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                    <span class="eq-bar"></span>
+                  </div>
                   <i class="fa-solid fa-volume-xmark"></i>
                 </button>
                 <div class="theme-switch-wrap clickable-element" id="theme-toggle" aria-label="Toggle Theme">

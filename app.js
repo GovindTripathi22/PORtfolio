@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
-  // Synthesized blip for tech tags & certs
+  // Synthesized blip for tech tags
   function playTagBlip() {
     if (soundMuted) return;
     try {
@@ -50,6 +50,43 @@ document.addEventListener('DOMContentLoaded', () => {
       gainNode.connect(audioCtx.destination);
       osc.start();
       osc.stop(audioCtx.currentTime + 0.03);
+    } catch (e) {}
+  }
+
+  // Synthesized key click for text handles and links
+  function playKeyboardTick() {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.006, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.015);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.015);
+    } catch (e) {}
+  }
+
+  // Synthesized bell chime for certifications
+  function playCertBell() {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1100, audioCtx.currentTime + 0.06);
+      gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.06);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.06);
     } catch (e) {}
   }
 
@@ -130,9 +167,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateMuteState() {
     if (soundMuted) {
+      document.body.classList.add('sound-muted');
       muteIcon.className = 'fa-solid fa-volume-xmark';
       muteToggle.style.color = 'var(--text-muted)';
     } else {
+      document.body.classList.remove('sound-muted');
       muteIcon.className = 'fa-solid fa-volume-high';
       muteToggle.style.color = 'var(--accent-cyan)';
       playClickChirp();
@@ -205,10 +244,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Bind hover sound triggers to tech tags and project cards
+  // Bind hover sound triggers with category specificity
   function initCursorStates() {
-    attachCursorState('.clickable-element, a, button, .project-card', 'cursor-hovering-clickable');
-    attachCursorState('.cert-pill, .tech-tag', 'cursor-hovering-clickable', playTagBlip);
+    // 1. Projects play glitch sound on hover
+    attachCursorState('.project-card', 'cursor-hovering-clickable', playHoverTick);
+    // 2. Tech tags play high-pitched synth blips
+    attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
+    // 3. Certifications play bell chimes
+    attachCursorState('.cert-pill', 'cursor-hovering-clickable', playCertBell);
+    // 4. Github, social links, headers and buttons play keyboard ticks
+    attachCursorState('.clickable-element, a, button, .experience-trigger', 'cursor-hovering-clickable', playKeyboardTick);
+    // 5. Input text areas play inputs
     attachCursorState('input, textarea', 'cursor-hovering-input');
   }
   initCursorStates();

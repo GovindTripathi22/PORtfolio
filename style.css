@@ -1557,3 +1557,67 @@ footer {
   font-weight: 700;
   color: var(--accent-cyan);
 }
+
+/* Blueprint Junction Nodes (Schematic circuit points) */
+.junction-node {
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 8px var(--accent-cyan);
+  z-index: 10;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  left: 0; /* Align perfectly on the side-rail line */
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.side-rail-right .junction-node {
+  left: auto;
+  right: 0;
+  transform: translate(50%, -50%);
+}
+
+/* Audio Equalizer Bars Visualizer */
+.audio-equalizer-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 12px;
+  height: 12px;
+}
+
+.eq-bar {
+  width: 2px;
+  height: 2px;
+  background-color: var(--text-muted);
+  transition: height 0.2s, background-color 0.2s;
+  animation: eqBounce 0.8s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.eq-bar:nth-child(2) {
+  animation-delay: 0.15s;
+  animation-duration: 0.6s;
+}
+
+.eq-bar:nth-child(3) {
+  animation-delay: 0.3s;
+  animation-duration: 0.7s;
+}
+
+/* When unmuted (remove sound-muted class on body) */
+body:not(.sound-muted) .eq-bar {
+  background-color: var(--accent-cyan);
+  animation-play-state: running;
+}
+
+@keyframes eqBounce {
+  from {
+    height: 2px;
+  }
+  to {
+    height: 12px;
+  }
+}
