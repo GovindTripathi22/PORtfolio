@@ -638,25 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initTerminalConsole();
 
-  // ========================================================================
-  // 6. LIVE STATUS BAR TIME (IST)
-  // ========================================================================
-  const liveTimeEl = document.getElementById('live-time');
-  if (liveTimeEl) {
-    function updateClock() {
-      const options = {
-        timeZone: 'Asia/Kolkata',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      };
-      const formatter = new Intl.DateTimeFormat('en-US', options);
-      liveTimeEl.textContent = `IST: ${formatter.format(new Date())}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-  }
+  // Unified timezone-toggled live clock is initialized at the bottom of the script.
 
   // ========================================================================
   // 7. LIVE VISITOR COUNTER & ACTIVE CONNECTIONS & GITHUB STATS
@@ -734,6 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: "PrismHand",
       category: "WebGL / MediaPipe",
       desc: "An interactive creative coding installation exploring real-time fingertip tracking via MediaPipe. Visitors can paint, sculpt, and distort coordinates directly on a flowing, particle-based WebGL canvas with spring-physics calculations.",
+      arch: "Uses MediaPipe Hands in the client browser to extract 21 3D coordinate nodes from webcam frames. Hand landmark coordinates are projected onto a Canvas element where custom spring-physics shaders calculate coordinate offsets, drawing a high-density glowing particle mesh running at 120fps.",
       tech: ["WebGL", "MediaPipe", "React", "Vanilla CSS", "Three.js"],
       img: "images/prismhand.jpg",
       github: "https://github.com/GovindTripathi22/PORtfolio",
@@ -743,6 +726,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: "Voyage",
       category: "Full Stack Planner",
       desc: "A smart AI-driven travel itinerary generator. The application queries custom LLM backends to generate optimal route directions, hotel stays, and dining choices based on user budgets, displaying active routes over an interactive map interface.",
+      arch: "Client frontend built with Next.js SPA architecture communicating with a Java Spring Boot REST API. Itinerary plans are generated using LangChain orchestration calling OpenAI GPT models. Route mapping is rendered dynamically over MapBox vector canvases synced with leaflet coordinates.",
       tech: ["Next.js", "Spring Boot", "MySQL", "OpenAI API", "MapBox"],
       img: "images/voyage.jpg",
       github: "https://github.com/GovindTripathi22/PORtfolio",
@@ -752,6 +736,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: "Obsidian Workspace",
       category: "Canvas Workspace",
       desc: "An offline-first, markdown-based desktop editor and workspace setup. It indexes local notes to dynamically build a visual 3D node connections graph of thoughts, ideas, and wiki links, built with focus on speed and local data ownership.",
+      arch: "Electron desktop wrapper enclosing a React/TypeScript interface. Node graphing is handled by D3-force layout simulations in a separate Web Worker thread. Indexes local directories of Markdown pages by parsing internal wiki link syntax [[note]] into adjacency matrices.",
       tech: ["Electron", "Node.js", "D3.js", "Markdown", "Webpack"],
       img: "images/obsidian.jpg",
       github: "https://github.com/GovindTripathi22/PORtfolio",
@@ -761,6 +746,7 @@ document.addEventListener('DOMContentLoaded', () => {
       title: "OCMS Portal",
       category: "Java REST API",
       desc: "A robust B2B College Management administrative dashboard. Manages student databases, faculty assignments, schedule tables, and marks enrollment metrics via secure RESTful APIs fortified by Spring Security and JSON Web Token auth.",
+      arch: "Multi-layered Spring Boot service architecture split into controller, service, and repository layers. Features custom JWT token-based session filters and granular method security. Connects to a PostgreSQL database with Liquibase schema migrations.",
       tech: ["Java", "Spring Boot", "JWT", "PostgreSQL", "React"],
       img: "images/ocms.jpg",
       github: "https://github.com/GovindTripathi22/PORtfolio",
@@ -772,12 +758,66 @@ document.addEventListener('DOMContentLoaded', () => {
   const modal = document.getElementById('project-modal');
   const modalClose = document.getElementById('modal-close');
   const modalBackdrop = document.getElementById('modal-backdrop');
+  
+  const modalExpandBtn = document.getElementById('modal-expand-link');
+  const dedicatedPage = document.getElementById('project-dedicated-page');
+  const dedicatedBackBtn = document.getElementById('dedicated-back-btn');
+
+  let currentlySelectedProjId = null;
+
+  function populateDedicatedPage(data) {
+    document.getElementById('dedicated-title').textContent = data.title;
+    document.getElementById('dedicated-tag').textContent = data.category;
+    document.getElementById('dedicated-desc').textContent = data.desc;
+    document.getElementById('dedicated-arch').textContent = data.arch;
+    
+    const imgEl = document.getElementById('dedicated-img');
+    if (imgEl) imgEl.src = data.img;
+    
+    const githubEl = document.getElementById('dedicated-github-link');
+    const demoEl = document.getElementById('dedicated-demo-link');
+    if (githubEl) githubEl.href = data.github;
+    if (demoEl) demoEl.href = data.demo;
+    
+    const techContainer = document.getElementById('dedicated-tech');
+    if (techContainer) {
+      techContainer.innerHTML = '';
+      data.tech.forEach(t => {
+        const span = document.createElement('span');
+        span.className = 'tech-tag clickable-element';
+        span.textContent = t;
+        techContainer.appendChild(span);
+      });
+      attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
+    }
+  }
+
+  function openDedicatedPage(projId) {
+    const data = projectDatabase[projId];
+    if (data) {
+      populateDedicatedPage(data);
+      window.location.hash = `#/project/${projId}`;
+      dedicatedPage.classList.add('active');
+      dedicatedPage.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      playSlideSound();
+    }
+  }
+
+  function closeDedicatedPage() {
+    dedicatedPage.classList.remove('active');
+    dedicatedPage.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    window.location.hash = `#/`;
+    playKeyboardTick();
+  }
 
   if (modal && projectCards.length > 0) {
     projectCards.forEach(card => {
       card.addEventListener('click', (e) => {
         e.preventDefault();
         const projId = card.getAttribute('data-project-id');
+        currentlySelectedProjId = projId;
         const data = projectDatabase[projId];
         
         if (data) {
@@ -802,7 +842,6 @@ document.addEventListener('DOMContentLoaded', () => {
               span.textContent = t;
               techContainer.appendChild(span);
             });
-            // Rebind hover triggers for the new tags
             attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
           }
           
@@ -823,6 +862,130 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modalBackdrop) modalBackdrop.addEventListener('click', closeModal);
+    
+    if (modalExpandBtn) {
+      modalExpandBtn.addEventListener('click', () => {
+        if (currentlySelectedProjId) {
+          closeModal();
+          setTimeout(() => {
+            openDedicatedPage(currentlySelectedProjId);
+          }, 300);
+        }
+      });
+    }
+    
+    if (dedicatedBackBtn) {
+      dedicatedBackBtn.addEventListener('click', closeDedicatedPage);
+    }
+  }
+
+  // Client-side Hash Router for Direct subpage hits
+  function checkHashRoute() {
+    const hash = window.location.hash;
+    if (hash.startsWith('#/project/')) {
+      const projId = hash.replace('#/project/', '');
+      if (projectDatabase[projId]) {
+        openDedicatedPage(projId);
+      }
+    }
+  }
+  window.addEventListener('hashchange', checkHashRoute);
+
+  // ========================================================================
+  // INTERACTIVE STATUS BAR DIAGNOSTIC CONTROLS
+  // ========================================================================
+  const statusSysActive = document.getElementById('status-sys-active') || document.querySelector('.terminal-status-bar .status-item');
+  const statusVisitor = document.getElementById('visitor-count');
+  const statusActive = document.getElementById('active-count');
+  const liveTimeEl = document.getElementById('live-time');
+
+  let showGMT = false;
+  if (liveTimeEl) {
+    liveTimeEl.addEventListener('click', () => {
+      showGMT = !showGMT;
+      playResonanceSound(); // custom low freq chime for GMT toggle
+    });
+  }
+
+  // Overwrite local clock logic to support timezone toggle (IST vs GMT)
+  function updateTime() {
+    if (liveTimeEl) {
+      const now = new Date();
+      if (showGMT) {
+        liveTimeEl.textContent = "GMT: " + now.toUTCString().slice(17, 25);
+      } else {
+        // IST: UTC + 5:30
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istTime = new Date(now.getTime() + istOffset);
+        liveTimeEl.textContent = "IST: " + istTime.toUTCString().slice(17, 25);
+      }
+    }
+  }
+  // Remove existing timer loops on IST clock and replace with this unified clock
+  setInterval(updateTime, 1000);
+  updateTime();
+
+  if (statusSysActive) {
+    statusSysActive.id = "status-sys-active"; // Ensure ID is present
+    statusSysActive.addEventListener('click', (e) => {
+      e.stopPropagation();
+      // Play high-frequency sweep sound
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.25);
+        gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.25);
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.25);
+      } catch (e) {}
+
+      // Temporary diagnostic tooltip update
+      const origText = statusSysActive.innerHTML;
+      statusSysActive.innerHTML = `<span class="status-pulse-dot" style="background-color:#10b981; box-shadow:0 0 10px #10b981;"></span>[SYS_CHECK: OK]`;
+      setTimeout(() => {
+        statusSysActive.innerHTML = origText;
+      }, 2000);
+    });
+  }
+
+  if (statusVisitor) {
+    statusVisitor.addEventListener('click', () => {
+      // Parse current visitor count and increment
+      const match = statusVisitor.textContent.match(/\d+/);
+      if (match) {
+        const nextVal = parseInt(match[0]) + 1;
+        statusVisitor.innerHTML = `<i class="fa-solid fa-users"></i> VISITORS: ${nextVal}`;
+        
+        // Play keyboard tick
+        playKeyboardTick();
+        
+        // Temporary glow highlight
+        statusVisitor.style.color = "var(--accent-cyan)";
+        setTimeout(() => { statusVisitor.style.color = ""; }, 400);
+      }
+    });
+  }
+
+  if (statusActive) {
+    statusActive.addEventListener('click', () => {
+      const match = statusActive.textContent.match(/\d+/);
+      if (match) {
+        const nextVal = Math.max(1, parseInt(match[0]) + (Math.random() > 0.5 ? 1 : -1));
+        statusActive.innerHTML = `<span class="active-pulse-dot"></span>ACTIVE: ${nextVal}`;
+        
+        // Play tag blip
+        playTagBlip();
+        
+        statusActive.style.color = "var(--accent-cyan)";
+        setTimeout(() => { statusActive.style.color = ""; }, 400);
+      }
+    });
   }
 
   // Run on start
@@ -830,4 +993,5 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchGithubStats();
   setInterval(updateActiveUsers, 8000);
   updateActiveUsers();
+  checkHashRoute();
 });

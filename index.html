@@ -544,7 +544,7 @@
             </div>
           </div>
           
-          <div class="modal-links-section" style="display:flex; gap:0.75rem; margin-top:1rem;">
+          <div class="modal-links-section" style="display:flex; gap:0.75rem; margin-top:1rem; flex-wrap:wrap;">
             <a href="" id="modal-github-link" target="_blank" rel="noopener noreferrer" class="cta-pill outline clickable-element">
               <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
               <span class="btn-text"><i class="fa-brands fa-github"></i> Repository</span>
@@ -553,12 +553,84 @@
               <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
               <span class="btn-text"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</span>
             </a>
+            <button id="modal-expand-link" class="cta-pill outline clickable-element" style="border:none; background:transparent; padding:0;">
+              <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
+              <span class="btn-text"><i class="fa-solid fa-maximize"></i> Expand View</span>
+            </button>
           </div>
         </div>
         
         <div class="dot-grid-band" aria-hidden="true" style="min-height: 40px; opacity:0.3;"></div>
       </div>
     </div>
+  </div>
+
+  <!-- Project Dedicated Page Overlay -->
+  <div class="project-dedicated-page font-mono" id="project-dedicated-page" aria-hidden="true">
+    <div class="dot-grid-band" aria-hidden="true" style="min-height: 40px; opacity: 0.35;"></div>
+    
+    <div class="dedicated-container">
+      <aside class="dedicated-sidebar">
+        <button class="cta-pill outline clickable-element" id="dedicated-back-btn" style="width: 100%; margin-bottom: 2rem; border:none; background:transparent; padding:0;">
+          <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
+          <span class="btn-text"><i class="fa-solid fa-arrow-left"></i> Return to Canvas</span>
+        </button>
+        
+        <div class="module-box">
+          <div class="module-title">[MODULE_ID: STATS]</div>
+          <ul class="module-stats-list">
+            <li><span>STATUS:</span> <span class="text-emerald-400">STABLE</span></li>
+            <li><span>VERSION:</span> <span>v1.2.4</span></li>
+            <li><span>COMPLETED:</span> <span>Q4 2025</span></li>
+            <li><span>LICENSE:</span> <span>MIT</span></li>
+          </ul>
+        </div>
+      </aside>
+      
+      <main class="dedicated-main">
+        <div class="dedicated-header">
+          <span class="modal-tag" id="dedicated-tag">Category</span>
+          <h1 class="dedicated-title" id="dedicated-title">Project Name</h1>
+        </div>
+        
+        <div class="dedicated-media-frame">
+          <img src="" id="dedicated-img" alt="Project Screenshot">
+        </div>
+        
+        <div class="dedicated-sections-grid">
+          <div class="dedicated-card">
+            <h3 class="dedicated-card-title"><i class="fa-solid fa-circle-info"></i> Project Overview</h3>
+            <p id="dedicated-desc" class="dedicated-card-text">Overview content...</p>
+          </div>
+          
+          <div class="dedicated-card">
+            <h3 class="dedicated-card-title"><i class="fa-solid fa-network-wired"></i> Architecture & Flow</h3>
+            <p id="dedicated-arch" class="dedicated-card-text">Architecture details...</p>
+          </div>
+          
+          <div class="dedicated-card">
+            <h3 class="dedicated-card-title"><i class="fa-solid fa-cubes"></i> Technologies Used</h3>
+            <div class="skills-tags-cloud" id="dedicated-tech" style="margin-top:0.5rem; display:flex; flex-wrap:wrap; gap:0.4rem;"></div>
+          </div>
+          
+          <div class="dedicated-card" style="display:flex; flex-direction:column; gap:1rem; justify-content:center;">
+            <h3 class="dedicated-card-title"><i class="fa-solid fa-link"></i> Deployment Links</h3>
+            <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
+              <a href="" id="dedicated-github-link" target="_blank" rel="noopener noreferrer" class="cta-pill outline clickable-element" style="flex:1; justify-content:center;">
+                <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
+                <span class="btn-text"><i class="fa-brands fa-github"></i> Repository</span>
+              </a>
+              <a href="" id="dedicated-demo-link" target="_blank" rel="noopener noreferrer" class="cta-pill fill clickable-element" style="flex:1; justify-content:center;">
+                <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
+                <span class="btn-text"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+    
+    <div class="dot-grid-band" aria-hidden="true" style="min-height: 40px; opacity: 0.35; margin-top: auto;"></div>
   </div>
 
   <script src="app.js"></script>
