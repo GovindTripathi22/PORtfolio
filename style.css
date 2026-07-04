@@ -1621,3 +1621,127 @@ body:not(.sound-muted) .eq-bar {
     height: 12px;
   }
 }
+
+/* Interactive Bento Console Box */
+.console-box {
+  width: 100%;
+  height: 320px;
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  margin-top: 1rem;
+}
+
+.console-header {
+  height: 36px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding-inline: 12px;
+  position: relative;
+}
+
+.console-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.console-dots span {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.console-dot-red { background-color: #ef4444; }
+.console-dot-yellow { background-color: #f59e0b; }
+.console-dot-green { background-color: #10b981; }
+
+.console-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.console-body {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--foreground);
+  text-align: left;
+}
+
+.console-line {
+  word-break: break-all;
+  white-space: pre-wrap;
+}
+
+.console-quick-cmds {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: rgba(0,0,0,0.05);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.cmd-pill {
+  font-family: var(--font-mono);
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cmd-pill:hover {
+  background-color: var(--accent-cyan);
+  color: #ffffff;
+  border-color: var(--accent-cyan);
+  transform: translateY(-1px);
+}
+
+.console-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: rgba(0,0,0,0.1);
+  border-top: 1px solid var(--border);
+}
+
+.console-prompt {
+  font-weight: 700;
+  font-size: 0.78rem;
+  user-select: none;
+}
+
+.console-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--foreground);
+  font-size: 0.78rem;
+  padding: 0;
+}
+
+.console-input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}

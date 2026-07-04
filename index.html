@@ -430,6 +430,40 @@
           </div>
         </section>
 
+        <!-- Interactive Terminal Console Section -->
+        <section class="section-wrap">
+          <div class="section-title-rails">
+            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
+            <h2 class="section-heading">Terminal Console</h2>
+            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
+          </div>
+          
+          <div class="console-box font-mono clickable-element">
+            <div class="console-header">
+              <div class="console-dots">
+                <span class="console-dot-red"></span>
+                <span class="console-dot-yellow"></span>
+                <span class="console-dot-green"></span>
+              </div>
+              <span class="console-title text-xs">govind@tripathi:~</span>
+            </div>
+            <div class="console-body" id="console-output">
+              <div class="console-line text-zinc-500">// System initialized. Type 'help' or click quick commands below:</div>
+              <div class="console-line text-emerald-400">govind-tripathi login: success. Welcome, guest user.</div>
+            </div>
+            <div class="console-quick-cmds">
+              <button class="cmd-pill text-xs clickable-element" data-cmd="help">help</button>
+              <button class="cmd-pill text-xs clickable-element" data-cmd="skills">skills</button>
+              <button class="cmd-pill text-xs clickable-element" data-cmd="projects">projects</button>
+              <button class="cmd-pill text-xs clickable-element" data-cmd="clear">clear</button>
+            </div>
+            <div class="console-input-row">
+              <span class="console-prompt text-emerald-400">govind-tripathi$</span>
+              <input type="text" id="console-input" class="console-input font-mono" placeholder="type here..." autocomplete="off">
+            </div>
+          </div>
+        </section>
+
       </div>
       
       <!-- Bottom Dot Grid Matrix Band -->

@@ -351,131 +351,292 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ========================================================================
-  // 5. SUBTLE BACKGROUND WEBGL SHADER
+  // 5. INTERACTIVE CONSTELLATION CANVAS BACKGROUND
   // ========================================================================
-  const glCanvas = document.getElementById('gl-canvas');
-  const gl = glCanvas.getContext('webgl') || glCanvas.getContext('experimental-webgl');
-
-  if (!gl) {
-    console.warn("WebGL not supported. Fallback to CSS.");
-    glCanvas.style.display = 'none';
-  } else {
-    const vsSource = `
-      attribute vec2 position;
-      void main() {
-        gl_Position = vec4(position, 0.0, 1.0);
-      }
-    `;
-
-    // A beautiful, low-contrast liquid gradient background that adapts to theme
-    const fsSource = `
-      precision mediump float;
-      uniform vec2 u_resolution;
-      uniform float u_time;
-      uniform vec2 u_mouse;
-      uniform float u_light_mode;
-
-      void main() {
-        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
-        vec2 m = u_mouse / u_resolution.xy;
-        
-        float t = u_time * 0.08;
-        
-        // Complex fluid coordinates
-        vec2 p = uv * 3.0 - vec2(1.5);
-        p.x += sin(p.y + t) * 0.4 + m.x * 0.15;
-        p.y += cos(p.x - t) * 0.4 + m.y * 0.15;
-        
-        float val = sin(length(p) * 2.0 - t);
-        
-        // Fluid dark/light adaptive palette
-        vec3 baseBg = mix(vec3(0.02, 0.02, 0.02), vec3(1.0, 1.0, 1.0), u_light_mode);
-        vec3 deepOrange = mix(vec3(0.5, 0.15, 0.0), vec3(1.0, 0.8, 0.7), u_light_mode);
-        vec3 warmAmber = mix(vec3(0.4, 0.25, 0.0), vec3(1.0, 0.9, 0.8), u_light_mode);
-        
-        vec3 col = mix(baseBg, deepOrange, clamp(val, 0.0, 1.0) * (u_light_mode > 0.5 ? 0.15 : 0.05));
-        col = mix(col, warmAmber, clamp(cos(p.y * 2.5), 0.0, 1.0) * (u_light_mode > 0.5 ? 0.12 : 0.04));
-        
-        // Vignette
-        float edge = length(uv - vec2(0.5));
-        col *= (1.0 - edge * (u_light_mode > 0.5 ? 0.15 : 0.55));
-        
-        gl_FragColor = vec4(col, 1.0);
-      }
-    `;
-
-    function buildShader(gl, source, type) {
-      const sh = gl.createShader(type);
-      gl.shaderSource(sh, source);
-      gl.compileShader(sh);
-      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-        gl.deleteShader(sh);
-        return null;
-      }
-      return sh;
-    }
-
-    const vs = buildShader(gl, vsSource, gl.VERTEX_SHADER);
-    const fs = buildShader(gl, fsSource, gl.FRAGMENT_SHADER);
-    const prog = gl.createProgram();
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-
-    const posAttr = gl.getAttribLocation(prog, 'position');
-    const resUnif = gl.getUniformLocation(prog, 'u_resolution');
-    const timeUnif = gl.getUniformLocation(prog, 'u_time');
-    const mouseUnif = gl.getUniformLocation(prog, 'u_mouse');
-    const lightUnif = gl.getUniformLocation(prog, 'u_light_mode');
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
-      -1, -1,  1, -1, -1,  1,
-      -1,  1,  1, -1,  1,  1
-    ]), gl.STATIC_DRAW);
-
-    let mouseLoc = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-    let currentMouseLoc = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-
-    window.addEventListener('mousemove', (e) => {
-      mouseLoc.x = e.clientX;
-      mouseLoc.y = window.innerHeight - e.clientY;
+  function initConstellationBackground() {
+    const canvas = document.getElementById('gl-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    
+    let particles = [];
+    const particleCount = 80;
+    const connectionDistance = 100;
+    
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+    
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
     });
-
-    function sizeGl() {
-      glCanvas.width = window.innerWidth;
-      glCanvas.height = window.innerHeight;
-      gl.viewport(0, 0, glCanvas.width, glCanvas.height);
+    
+    let mouse = { x: null, y: null };
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+    
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
+        this.radius = Math.random() * 1.5 + 1;
+      }
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+        
+        // Mouse interaction (gentle attraction)
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = mouse.x - this.x;
+          const dy = mouse.y - this.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 150) {
+            this.x += dx * 0.005;
+            this.y += dy * 0.005;
+          }
+        }
+      }
+      draw() {
+        const isLight = document.body.getAttribute('data-theme') === 'light';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = isLight ? 'rgba(255, 102, 0, 0.4)' : 'rgba(255, 102, 0, 0.65)';
+        ctx.fill();
+      }
     }
-    window.addEventListener('resize', sizeGl);
-    sizeGl();
-
-    let currentLightModeVal = document.body.getAttribute('data-theme') === 'light' ? 1.0 : 0.0;
-
-    function drawGl(time) {
-      currentMouseLoc.x += (mouseLoc.x - currentMouseLoc.x) * 0.08;
-      currentMouseLoc.y += (mouseLoc.y - currentMouseLoc.y) * 0.08;
-
-      const targetLightModeVal = document.body.getAttribute('data-theme') === 'light' ? 1.0 : 0.0;
-      currentLightModeVal += (targetLightModeVal - currentLightModeVal) * 0.05;
-
-      gl.clearColor(0,0,0,0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-      gl.useProgram(prog);
-      gl.enableVertexAttribArray(posAttr);
-      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-      gl.vertexAttribPointer(posAttr, 2, gl.FLOAT, false, 0, 0);
-
-      gl.uniform2f(resUnif, glCanvas.width, glCanvas.height);
-      gl.uniform1f(timeUnif, time * 0.01);
-      gl.uniform2f(mouseUnif, currentMouseLoc.x, currentMouseLoc.y);
-      gl.uniform1f(lightUnif, currentLightModeVal);
-
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
+    
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
     }
-    requestAnimationFrame(drawGl);
+    
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      const isLight = document.body.getAttribute('data-theme') === 'light';
+      
+      // Update & Draw particles
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      
+      // Draw connection lines
+      ctx.lineWidth = 0.5;
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.hypot(dx, dy);
+          
+          if (dist < connectionDistance) {
+            const alpha = (1 - dist / connectionDistance) * (isLight ? 0.07 : 0.12);
+            ctx.strokeStyle = `rgba(255, 102, 0, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+        
+        // Draw connection to mouse
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = particles[i].x - mouse.x;
+          const dy = particles[i].y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 150) {
+            const alpha = (1 - dist / 150) * (isLight ? 0.1 : 0.18);
+            ctx.strokeStyle = `rgba(255, 102, 0, ${alpha})`;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(mouse.x, mouse.y);
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
   }
+  initConstellationBackground();
+
+  // ========================================================================
+  // 5B. SCI-FI DECRYPT SCRAPING EFFECTS
+  // ========================================================================
+  class TextScrambler {
+    constructor(el) {
+      this.el = el;
+      this.chars = '!<>-_\\/[]{}—=+*^?#________';
+      this.update = this.update.bind(this);
+    }
+    setText(newText) {
+      const oldText = this.el.innerText;
+      const length = Math.max(oldText.length, newText.length);
+      const promise = new Promise((resolve) => this.resolve = resolve);
+      this.queue = [];
+      for (let i = 0; i < length; i++) {
+        const start = Math.floor(Math.random() * 20);
+        const end = start + Math.floor(Math.random() * 20);
+        this.queue.push({
+          from: oldText[i] || '',
+          to: newText[i] || '',
+          start,
+          end,
+          char: ''
+        });
+      }
+      cancelAnimationFrame(this.frameId);
+      this.frame = 0;
+      this.update();
+      return promise;
+    }
+    update() {
+      let output = '';
+      let complete = 0;
+      for (let i = 0, n = this.queue.length; i < n; i++) {
+        let { from, to, start, end, char } = this.queue[i];
+        if (this.frame >= end) {
+          complete++;
+          output += to;
+        } else if (this.frame >= start) {
+          if (!char || Math.random() < 0.28) {
+            char = this.randomChar();
+            this.queue[i].char = char;
+          }
+          output += `<span style="color: var(--accent-cyan); text-shadow: 0 0 5px var(--accent-cyan);">${char}</span>`;
+        } else {
+          output += from;
+        }
+      }
+      this.el.innerHTML = output;
+      if (complete === this.queue.length) {
+        this.resolve();
+      } else {
+        this.frameId = requestAnimationFrame(this.update);
+        this.frame++;
+      }
+    }
+    randomChar() {
+      return this.chars[Math.floor(Math.random() * this.chars.length)];
+    }
+  }
+
+  // Scramble decrypt logo text on load
+  const profileNameSpan = document.querySelector('.profile-name span');
+  const profileTitleEl = document.querySelector('.profile-title');
+  if (profileNameSpan) {
+    const s1 = new TextScrambler(profileNameSpan);
+    s1.setText('Govind Tripathi');
+  }
+  if (profileTitleEl) {
+    const s2 = new TextScrambler(profileTitleEl);
+    s2.setText('Full-stack developer');
+  }
+
+  // ========================================================================
+  // 5C. INTERACTIVE CLI SYSTEM TERMINAL
+  // ========================================================================
+  function initTerminalConsole() {
+    const consoleInput = document.getElementById('console-input');
+    const consoleOutput = document.getElementById('console-output');
+    const cmdPills = document.querySelectorAll('.cmd-pill');
+    
+    if (!consoleInput || !consoleOutput) return;
+    
+    const commandResponses = {
+      help: `Available commands:
+  - skills   : View current technical stack metrics
+  - projects : View list of active development projects
+  - about    : View developer background bio summary
+  - contact  : View phone, email, and social details
+  - theme    : Toggle between Light and Dark mode layout
+  - clear    : Clear terminal screen output`,
+      skills: `=== TECHNICAL SKILLS MATRIX ===
+  - React & Next.js     [██████████████░] 92%
+  - Node.js & Express   [██████████████░] 90%
+  - Java & Spring Boot  [█████████████░░] 85%
+  - WebGL & Particle    [████████████░░░] 80%
+  - SQL & MongoDB       [█████████████░░] 85%
+  - Git, Docker, CI/CD  [██████████████░] 90%`,
+      projects: `=== ACTIVE PROJECTS ===
+  1. PrismHand [WebGL Sculpting Canvas] -> React/Three
+  2. Voyage [AI Route Travel Planner]   -> Next.js/Spring Boot
+  3. Obsidian Workspace [Note Graph]     -> Offline Markdown
+  4. OCMS College Platform [B2B API]     -> Spring Boot JWT`,
+      about: `=== DEVELOPER BIOGRAPHY ===
+  Name   : Govind Tripathi
+  Status : B.Tech Computer Science student & Freelancer
+  Focus  : Full-stack products, creative coding, scalable services.`,
+      contact: `=== CONTACT METADATA ===
+  Email   : govindtripathi62@gmail.com
+  Phone   : +91 9699124496
+  Github  : github.com/GovindTripathi22
+  LinkedIn: linkedin.com/in/govind-t-35360a290`,
+      theme: `Toggling layout theme...`
+    };
+    
+    function printLine(text, className = '') {
+      const line = document.createElement('div');
+      line.className = 'console-line ' + className;
+      line.textContent = text;
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+    
+    function executeCommand(cmdText) {
+      const cleanCmd = cmdText.trim().toLowerCase();
+      printLine(`govind-tripathi$ ${cmdText}`, 'text-zinc-400');
+      
+      // Play terminal tick
+      playKeyboardTick();
+      
+      if (cleanCmd === 'clear') {
+        consoleOutput.innerHTML = '';
+        printLine('// System cleared. Type "help" for command matrix.', 'text-zinc-500');
+        return;
+      }
+      
+      if (cleanCmd === 'theme') {
+        printLine(commandResponses.theme, 'text-amber-400');
+        setTimeout(() => {
+          const active = document.body.getAttribute('data-theme');
+          const toggleBtn = document.getElementById('theme-toggle');
+          if (toggleBtn) toggleBtn.click();
+        }, 300);
+        return;
+      }
+      
+      if (commandResponses[cleanCmd]) {
+        printLine(commandResponses[cleanCmd], 'text-emerald-400');
+      } else if (cleanCmd !== '') {
+        printLine(`Command not found: "${cmdText}". Type "help" for list of valid options.`, 'text-red-400');
+      }
+    }
+    
+    consoleInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = consoleInput.value;
+        executeCommand(val);
+        consoleInput.value = '';
+      }
+    });
+    
+    cmdPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const cmd = pill.getAttribute('data-cmd');
+        executeCommand(cmd);
+      });
+    });
+  }
+  initTerminalConsole();
 
   // ========================================================================
   // 6. LIVE STATUS BAR TIME (IST)
