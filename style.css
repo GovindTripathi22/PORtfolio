@@ -2420,3 +2420,31 @@ body {
 .fade-out-matrix {
   opacity: 0 !important;
 }
+
+/* Custom View Transition circular clip-path reveal styles */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* In dark mode to light mode transition, light mode grows from button */
+[data-theme="light"]::view-transition-old(root) {
+  z-index: 1;
+}
+[data-theme="light"]::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* In light mode to dark mode transition, dark mode grows (revealed by shrinking clip-path or inverse old overlay) */
+[data-theme="dark"]::view-transition-old(root) {
+  z-index: 9999;
+}
+[data-theme="dark"]::view-transition-new(root) {
+  z-index: 1;
+}
+
+/* Ultimate GitHub Contribution Calendar filter visibility override */
+[data-theme="dark"] .github-chart-img {
+  filter: invert(1) hue-rotate(180deg) saturate(1.4) brightness(1.2) drop-shadow(0 0 6px rgba(255, 102, 0, 0.25));
+}

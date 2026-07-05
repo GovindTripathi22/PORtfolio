@@ -309,17 +309,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playThemeChime(target === 'dark');
 
-    // If startViewTransition is not supported, fallback to simple data attribute swap
-    if (!document.startViewTransition) {
+    // If startViewTransition is not supported or event is missing, fallback to simple toggle
+    if (!document.startViewTransition || !e) {
       document.body.setAttribute('data-theme', target);
       localStorage.setItem('theme', target);
       return;
     }
 
-    // Modern browser native view transition for ultra-smooth 120fps crossfade
-    document.startViewTransition(() => {
+    const x = e.clientX;
+    const y = e.clientY;
+    const endRadius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const transition = document.startViewTransition(() => {
       document.body.setAttribute('data-theme', target);
       localStorage.setItem('theme', target);
+    });
+
+    transition.ready.then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`
+      ];
+      document.documentElement.animate(
+        {
+          clipPath: target === 'light' ? clipPath : clipPath.reverse()
+        },
+        {
+          duration: 500,
+          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          pseudoElement: target === 'light' ? '::view-transition-new(root)' : '::view-transition-old(root)'
+        }
+      );
     });
   }
 
