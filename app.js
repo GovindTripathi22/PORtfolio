@@ -553,12 +553,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const commandResponses = {
       help: `Available commands:
-  - skills   : View current technical stack metrics
-  - projects : View list of active development projects
-  - about    : View developer background bio summary
-  - contact  : View phone, email, and social details
-  - theme    : Toggle between Light and Dark mode layout
-  - clear    : Clear terminal screen output`,
+  - skills        : View current technical stack metrics
+  - projects      : View list of active development projects
+  - about         : View developer background bio summary
+  - contact       : View phone, email, and social details
+  - theme         : Toggle between Light and Dark mode layout
+  - clear         : Clear terminal screen output
+  - matrix        : Toggle matrix falling code overlay
+  - synth         : Turn keyboard into a sound synthesizer
+  - self-destruct : Initiate safety core detonation sequence`,
       skills: `=== TECHNICAL SKILLS MATRIX ===
   - React & Next.js     [██████████████░] 92%
   - Node.js & Express   [██████████████░] 90%
@@ -601,6 +604,25 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cleanCmd === 'clear') {
         consoleOutput.innerHTML = '';
         printLine('// System cleared. Type "help" for command matrix.', 'text-zinc-500');
+        return;
+      }
+      
+      if (cleanCmd === 'matrix') {
+        printLine('>> [INITIATING MATRIX CHRONOLOGY OVERLAY]', 'text-emerald-400 font-bold');
+        triggerMatrixRain();
+        return;
+      }
+      
+      if (cleanCmd === 'self-destruct') {
+        printLine('>> [CORE DESTRUCT COMMAND DETECTED]', 'text-red-500 font-bold');
+        triggerSelfDestruct();
+        return;
+      }
+
+      if (cleanCmd === 'synth') {
+        printLine('=== WEB SYNTHESIZER ACTIVE ===', 'text-amber-400');
+        printLine('Keyboard keys [A, S, D, F, G, H, J, K] are now playable notes!', 'text-zinc-400');
+        triggerSynthPiano();
         return;
       }
       
@@ -987,6 +1009,381 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+
+  // ========================================================================
+  // 8. INTERACTIVE EASTER EGGS AND HIDDEN GEMS
+  // ========================================================================
+
+  // Beep Sound Synthesizer
+  function playBeepTone(freq = 440, duration = 0.1, type = 'sine') {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.02, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  // Sci-Fi Sonar Sweep Sound
+  function playSystemSweep(startFreq = 800, endFreq = 1600, type = 'sine', duration = 0.5) {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(startFreq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(endFreq, audioCtx.currentTime + duration);
+      gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  // Explosion sound synthesizer
+  function playExplosionSound(baseFreq = 80, duration = 1.0) {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(10, audioCtx.currentTime + duration);
+      gainNode.gain.setValueAtTime(0.06, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch (e) {}
+  }
+
+  // Retro Level Up Chime
+  function playRetroLevelUpChime() {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+      notes.forEach((freq, idx) => {
+        setTimeout(() => {
+          const osc = audioCtx.createOscillator();
+          const gainNode = audioCtx.createGain();
+          osc.type = 'square';
+          osc.frequency.value = freq;
+          gainNode.gain.setValueAtTime(0.015, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.15);
+          osc.connect(gainNode);
+          gainNode.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.15);
+        }, idx * 120);
+      });
+    } catch (e) {}
+  }
+
+  // 1. Matrix Rain Mode Overlay
+  function triggerMatrixRain() {
+    playSystemSweep(600, 1800, 'sawtooth', 0.8);
+    
+    // Check if canvas already exists
+    if (document.getElementById('matrix-rain-canvas')) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.id = 'matrix-rain-canvas';
+    canvas.style.position = 'fixed';
+    canvas.style.inset = '0';
+    canvas.style.zIndex = '999995'; // Behind cursor, above content
+    canvas.style.pointerEvents = 'none';
+    canvas.style.opacity = '0.75';
+    document.body.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
+
+    const characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@%&+*";
+    const columns = Math.floor(width / 20);
+    const drops = Array(columns).fill(1);
+
+    function draw() {
+      ctx.fillStyle = 'rgba(9, 9, 11, 0.08)';
+      ctx.fillRect(0, 0, width, height);
+
+      ctx.fillStyle = 'var(--accent-cyan)';
+      ctx.font = '15px monospace';
+
+      for (let i = 0; i < drops.length; i++) {
+        const char = characters[Math.floor(Math.random() * characters.length)];
+        ctx.fillText(char, i * 20, drops[i] * 20);
+
+        if (drops[i] * 20 > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    const interval = setInterval(draw, 33);
+
+    // Resize canvas with window
+    const handleResize = () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Clean up after 10 seconds
+    setTimeout(() => {
+      clearInterval(interval);
+      window.removeEventListener('resize', handleResize);
+      canvas.classList.add('fade-out-matrix');
+      setTimeout(() => {
+        canvas.remove();
+      }, 1000);
+    }, 10000);
+  }
+
+  // 2. Self-Destruct Simulation sequence
+  let selfDestructActive = false;
+  function triggerSelfDestruct() {
+    if (selfDestructActive) return;
+    selfDestructActive = true;
+    
+    let countdown = 5;
+    const consoleOutput = document.getElementById('console-output');
+    
+    function printLine(text, colorClass = '') {
+      if (!consoleOutput) return;
+      const line = document.createElement('div');
+      line.className = `console-line ${colorClass}`;
+      line.textContent = text;
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+
+    printLine("[WARNING: SELF-DESTRUCT INITIATED]", "text-red-500 font-bold");
+    playBeepTone(880, 0.3, 'sawtooth');
+    
+    const timer = setInterval(() => {
+      if (countdown > 0) {
+        printLine(`T-minus ${countdown} seconds...`, "text-amber-500");
+        playBeepTone(1000, 0.1, 'sine');
+        countdown--;
+      } else {
+        clearInterval(timer);
+        printLine("[CRITICAL OVERLOAD: CORE DETONATION]", "text-red-600 font-bold");
+        executeDetonation();
+      }
+    }, 1000);
+  }
+
+  function executeDetonation() {
+    document.body.classList.add('screen-shake-red');
+    playExplosionSound(120, 1.5);
+
+    setTimeout(() => {
+      const bsod = document.createElement('div');
+      bsod.id = 'bsod-overlay';
+      bsod.style.position = 'fixed';
+      bsod.style.inset = '0';
+      bsod.style.backgroundColor = '#0000bb';
+      bsod.style.color = '#ffffff';
+      bsod.style.fontFamily = 'monospace';
+      bsod.style.padding = '3rem';
+      bsod.style.zIndex = '999999';
+      bsod.style.cursor = 'default';
+      
+      bsod.innerHTML = `
+        <div style="max-width: 600px; margin: 5rem auto; line-height: 1.6;">
+          <h1 style="background-color: #ffffff; color: #0000bb; padding: 0.2rem 1rem; display: inline-block; font-size: 1.5rem;">SYSTEM OVERLOAD</h1>
+          <p style="margin-top: 2rem;">A fatal exception OE has occurred at 0028:C0011A3D in VXD VMM(01) + 00005A3D. The current session has been detonate-wiped.</p>
+          <p style="margin-top: 1.5rem;">* Press any key or click reboot to restore dashboard systems.<br>
+          * Pressing CTRL+ALT+DEL again will result in immediate browser loop.</p>
+          <p style="margin-top: 3rem; text-align: center;">
+            <span id="bsod-reboot-btn" class="clickable-element" style="text-decoration: none; cursor: pointer; font-weight: bold; padding: 0.5rem 1.25rem; border: 2px solid white; border-radius: 4px; display: inline-block; transition: all 0.2s;">[ REBOOT SYSTEM ]</span>
+          </p>
+        </div>
+      `;
+      
+      document.body.appendChild(bsod);
+
+      const rebootBtn = document.getElementById('bsod-reboot-btn');
+      
+      const doReboot = () => {
+        playBeepTone(440, 0.4, 'sine');
+        bsod.remove();
+        document.body.classList.remove('screen-shake-red');
+        selfDestructActive = false;
+        
+        const consoleOutput = document.getElementById('console-output');
+        if (consoleOutput) {
+          consoleOutput.innerHTML = `
+            <div class="console-line text-zinc-500">// System reboot complete. Logs restored.</div>
+            <div class="console-line text-emerald-400">govind-tripathi$ core recovered. All processes green.</div>
+          `;
+        }
+      };
+      
+      rebootBtn.addEventListener('click', doReboot);
+      window.addEventListener('keydown', function handleRebootKey() {
+        doReboot();
+        window.removeEventListener('keydown', handleRebootKey);
+      });
+    }, 1000);
+  }
+
+  // 3. Audio Synthesizer Keyboard Easter Egg
+  let synthActive = false;
+  const noteFreqs = {
+    'a': 261.63, // C4
+    's': 293.66, // D4
+    'd': 329.63, // E4
+    'f': 349.23, // F4
+    'g': 392.00, // G4
+    'h': 440.00, // A4
+    'j': 493.88, // B4
+    'k': 523.25  // C5
+  };
+
+  function triggerSynthPiano() {
+    if (synthActive) return;
+    synthActive = true;
+    
+    // Add visual notification badge to header controls
+    const badge = document.createElement('span');
+    badge.id = 'synth-active-badge';
+    badge.style.cssText = `
+      font-size: 0.65rem;
+      background-color: var(--accent-orchid);
+      color: #000;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 0.5rem;
+      animation: statusBlink 1s infinite alternate;
+    `;
+    badge.textContent = 'SYNTH_ON';
+    
+    const headerTitle = document.querySelector('.profile-name');
+    if (headerTitle) headerTitle.appendChild(badge);
+
+    const handleSynthKeys = (e) => {
+      const key = e.key.toLowerCase();
+      if (noteFreqs[key]) {
+        playBeepTone(noteFreqs[key], 0.25, 'triangle');
+        // Visual text splash in console
+        const consoleOutput = document.getElementById('console-output');
+        if (consoleOutput) {
+          const noteLine = document.createElement('div');
+          noteLine.className = 'console-line text-zinc-400';
+          noteLine.textContent = `[SYNTH NOTE: ${key.toUpperCase()} (${noteFreqs[key]}Hz)]`;
+          consoleOutput.appendChild(noteLine);
+          consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+      }
+    };
+    
+    window.addEventListener('keydown', handleSynthKeys);
+    
+    // Turn off after 30 seconds
+    setTimeout(() => {
+      window.removeEventListener('keydown', handleSynthKeys);
+      if (badge) badge.remove();
+      synthActive = false;
+      const consoleOutput = document.getElementById('console-output');
+      if (consoleOutput) {
+        const line = document.createElement('div');
+        line.className = 'console-line text-zinc-500';
+        line.textContent = '// Synthesizer timed out. Keys disabled.';
+        consoleOutput.appendChild(line);
+      }
+    }, 30000);
+  }
+
+  // 4. Konami Code Sequence listener
+  const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+  let konamiIndex = 0;
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        triggerKonamiEgg();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
+    }
+  });
+
+  function triggerKonamiEgg() {
+    playRetroLevelUpChime();
+    
+    // Hacker theme skin toggle!
+    document.body.classList.toggle('konami-hacker-mode');
+    
+    const consoleOutput = document.getElementById('console-output');
+    if (consoleOutput) {
+      const line = document.createElement('div');
+      line.className = 'console-line text-amber-400 font-bold';
+      line.textContent = '>> [CHEAT CODE INITIATED: GOVIND_GOD_MODE_ACTIVE]';
+      consoleOutput.appendChild(line);
+      consoleOutput.scrollTop = consoleOutput.scrollHeight;
+    }
+  }
+
+  // 5. CLI Header window control dots trigger
+  function initTerminalDots() {
+    const redDot = document.querySelector('.console-dot-red');
+    const yellowDot = document.querySelector('.console-dot-yellow');
+    const greenDot = document.querySelector('.console-dot-green');
+
+    if (redDot) {
+      redDot.style.cursor = 'pointer';
+      redDot.title = 'Wipe Logs';
+      redDot.addEventListener('click', () => {
+        playBeepTone(400, 0.15, 'sawtooth');
+        const consoleOutput = document.getElementById('console-output');
+        if (consoleOutput) {
+          consoleOutput.innerHTML = '<div class="console-line text-zinc-500">// Terminal history cleared by mock system kill.</div>';
+        }
+      });
+    }
+
+    if (yellowDot) {
+      yellowDot.style.cursor = 'pointer';
+      yellowDot.title = 'Switch Console Theme';
+      let colors = ['#ff6600', '#10b981', '#06b6d4', '#ec4899'];
+      let idx = 0;
+      yellowDot.addEventListener('click', () => {
+        idx = (idx + 1) % colors.length;
+        document.documentElement.style.setProperty('--accent-cyan', colors[idx]);
+        playBeepTone(600 + (idx * 80), 0.1, 'triangle');
+      });
+    }
+
+    if (greenDot) {
+      greenDot.style.cursor = 'pointer';
+      greenDot.title = 'Initiate Matrix Mode';
+      greenDot.addEventListener('click', () => {
+        triggerMatrixRain();
+      });
+    }
+  }
+  initTerminalDots();
 
   // Run on start
   initVisitorCounter();
