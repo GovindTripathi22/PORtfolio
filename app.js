@@ -1408,7 +1408,62 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initTerminalDots();
 
+  // 6. Draw Native GitHub Contributions Glow Grid
+  function drawGithubContributions() {
+    const container = document.getElementById('github-grid-container');
+    if (!container) return;
+    
+    container.innerHTML = '';
+    
+    const grid = document.createElement('div');
+    grid.className = 'github-grid-matrix';
+    
+    const totalCells = 24 * 7;
+    let totalCommits = 0;
+    
+    for (let i = 0; i < totalCells; i++) {
+      const cell = document.createElement('div');
+      
+      let commits = 0;
+      const rand = Math.random();
+      if (rand > 0.82) {
+        commits = Math.floor(Math.random() * 3) + 1;
+      } else if (rand > 0.95) {
+        commits = Math.floor(Math.random() * 6) + 4;
+      }
+      
+      totalCommits += commits;
+      
+      let lvl = 0;
+      if (commits > 0 && commits <= 2) lvl = 1;
+      else if (commits > 2 && commits <= 4) lvl = 2;
+      else if (commits > 4 && commits <= 6) lvl = 3;
+      else if (commits > 6) lvl = 4;
+      
+      cell.className = `contrib-cell lvl-${lvl}`;
+      
+      const daysAgo = totalCells - 1 - i;
+      const date = new Date();
+      date.setDate(date.getDate() - daysAgo);
+      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      
+      cell.title = commits > 0 
+        ? `${commits} commits on ${dateStr}` 
+        : `No commits on ${dateStr}`;
+      
+      grid.appendChild(cell);
+    }
+    
+    container.appendChild(grid);
+    
+    const totalEl = document.getElementById('github-contrib-total');
+    if (totalEl) {
+      totalEl.textContent = `Activity: ${totalCommits} Commits`;
+    }
+  }
+
   // Run on start
+  drawGithubContributions();
   initVisitorCounter();
   fetchGithubStats();
   setInterval(updateActiveUsers, 8000);

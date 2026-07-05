@@ -162,17 +162,25 @@
             </div>
 
             <!-- GitHub Contributions Module -->
-            <div class="github-chart-card clickable-element" style="margin-top: 0;">
+            <div class="github-chart-card clickable-element" style="margin-top: 0; width: 100%;">
               <div class="github-chart-header font-mono text-xs text-muted-foreground mb-2" style="display:flex; justify-content:space-between; width:100%;">
                 <span>[LOG_ID: 08_GH_COMMITS]</span>
-                <span id="github-contrib-total">Activity Calendar</span>
+                <span id="github-contrib-total" class="text-emerald-400">Activity: -- Commits</span>
               </div>
-              <div class="github-chart-wrap">
-                <img src="https://ghchart.rshah.org/ff6600/GovindTripathi22" alt="Govind's GitHub Contributions Calendar" class="github-chart-img">
+              <div class="github-chart-wrap" id="github-grid-container" style="padding: 6px 0;">
+                <!-- Dynamically populated native glow grid -->
               </div>
-              <div class="github-chart-footer font-mono text-xs text-muted-foreground mt-2" style="display:flex; justify-content:space-between; width:100%; font-size: 0.68rem; opacity: 0.8;">
-                <span>USER: @GovindTripathi22</span>
-                <span>GRID STATUS: ACTIVE</span>
+              <div class="github-chart-footer font-mono text-xs text-muted-foreground mt-2" style="display:flex; justify-content:space-between; width:100%; font-size: 0.65rem; opacity: 0.85; align-items:center;">
+                <span>@GovindTripathi22</span>
+                <div class="github-legend" style="display:flex; gap:3px; align-items:center;">
+                  <span>Less</span>
+                  <span class="legend-box lvl-0" style="width:8px; height:8px; border-radius:1px; display:inline-block;"></span>
+                  <span class="legend-box lvl-1" style="width:8px; height:8px; border-radius:1px; display:inline-block;"></span>
+                  <span class="legend-box lvl-2" style="width:8px; height:8px; border-radius:1px; display:inline-block;"></span>
+                  <span class="legend-box lvl-3" style="width:8px; height:8px; border-radius:1px; display:inline-block;"></span>
+                  <span class="legend-box lvl-4" style="width:8px; height:8px; border-radius:1px; display:inline-block;"></span>
+                  <span>More</span>
+                </div>
               </div>
             </div>
 
