@@ -62,431 +62,411 @@
       <!-- Main Content Container -->
       <div class="content-main">
         
-        <!-- Header Bio Section -->
-        <section class="pt-4 relative">
-          <div class="horizontal-rail top-rail" aria-hidden="true"></div>
+        <div class="split-workspace">
           
-          <div class="header-flex">
-            <!-- Profile Avatar Panel -->
-            <span class="profile-avatar-frame clickable-element">
-              <img src="images/profile.jpg" alt="Govind Tripathi Profile" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
-            </span>
+          <!-- Left Panel: Sticky Profile Control Center -->
+          <aside class="workspace-sidebar">
             
-            <div class="profile-details">
-              <!-- Inline Half Circle Icon for Theme Visuals -->
-              <div class="theme-icon-indicator" id="theme-visual-btn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-half"><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/></svg>
-              </div>
-              <h1 class="profile-name">
-                <span class="inline-flex items-center gap-1.5">
-                  Govind Tripathi
-                  <!-- Verified Badge -->
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#42A5F5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="verified-badge"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <!-- Header Bio Card Module -->
+            <div class="module-box pt-4 relative" style="padding-top: 1rem;">
+              <div class="header-flex">
+                <span class="profile-avatar-frame clickable-element">
+                  <img src="images/profile.jpg" alt="Govind Tripathi Profile" style="width:100%; height:100%; object-fit:cover; border-radius:6px;">
                 </span>
-              </h1>
-              <span class="profile-title">Full-stack developer</span>
-              <div class="relative inline-block group/github">
-                <a href="https://github.com/GovindTripathi22" target="_blank" rel="noopener noreferrer" class="profile-github-handle clickable-element"><i class="fa-brands fa-github"></i> github.com/GovindTripathi22</a>
                 
-                <!-- Floating Github Card Preview -->
-                <div class="github-hover-card" id="github-hover-card">
-                  <div class="github-card-header">
-                    <img id="github-avatar" src="images/profile.jpg" alt="Github Avatar">
-                    <div class="github-card-meta">
-                      <span id="github-name" class="font-bold">Govind Tripathi</span>
-                      <span id="github-username" class="font-mono text-xs">@GovindTripathi22</span>
+                <div class="profile-details">
+                  <div class="theme-icon-indicator" id="theme-visual-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-half"><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/></svg>
+                  </div>
+                  <h1 class="profile-name">
+                    <span class="inline-flex items-center gap-1.5">
+                      Govind Tripathi
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="#42A5F5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="verified-badge"><path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path d="m9 12 2 2 4-4"/></svg>
+                    </span>
+                  </h1>
+                  <span class="profile-title">Full-stack developer</span>
+                  <div class="relative inline-block group/github">
+                    <a href="https://github.com/GovindTripathi22" target="_blank" rel="noopener noreferrer" class="profile-github-handle clickable-element"><i class="fa-brands fa-github"></i> github.com/GovindTripathi22</a>
+                    
+                    <!-- Floating Github Card Preview -->
+                    <div class="github-hover-card" id="github-hover-card">
+                      <div class="github-card-header">
+                        <img id="github-avatar" src="images/profile.jpg" alt="Github Avatar">
+                        <div class="github-card-meta">
+                          <span id="github-name" class="font-bold">Govind Tripathi</span>
+                          <span id="github-username" class="font-mono text-xs">@GovindTripathi22</span>
+                        </div>
+                      </div>
+                      <div id="github-bio" class="github-card-bio">Full Stack Developer & Creative Coder</div>
+                      <div class="github-card-stats font-mono">
+                        <div class="stat-item"><span id="github-repos" class="stat-num">-</span><span>Repos</span></div>
+                        <div class="stat-item"><span id="github-followers" class="stat-num">-</span><span>Followers</span></div>
+                        <div class="stat-item"><span id="github-following" class="stat-num">-</span><span>Following</span></div>
+                      </div>
                     </div>
                   </div>
-                  <div id="github-bio" class="github-card-bio">Full Stack Developer & Creative Coder</div>
-                  <div class="github-card-stats font-mono">
-                    <div class="stat-item"><span id="github-repos" class="stat-num">-</span><span>Repos</span></div>
-                    <div class="stat-item"><span id="github-followers" class="stat-num">-</span><span>Followers</span></div>
-                    <div class="stat-item"><span id="github-following" class="stat-num">-</span><span>Following</span></div>
+                </div>
+                
+                <!-- Controls on Right -->
+                <div class="header-controls-column" style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; margin-left:auto;">
+                  <div class="header-controls" style="display:flex; gap:0.5rem; align-items:center;">
+                    <button class="control-btn clickable-element" id="mute-toggle" aria-label="Toggle Audio" style="display:flex; align-items:center; gap:0.4rem;">
+                      <div class="audio-equalizer-bars">
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                        <span class="eq-bar"></span>
+                      </div>
+                      <i class="fa-solid fa-volume-xmark"></i>
+                    </button>
+                    <div class="theme-switch-wrap clickable-element" id="theme-toggle" aria-label="Toggle Theme">
+                      <div class="theme-switch-knob">
+                        <i class="fa-solid fa-moon icon-dark"></i>
+                        <i class="fa-solid fa-sun icon-light"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="visitor-counter-wrap font-mono" id="visitor-count-header" style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:0.35rem; margin-top:0.25rem;">
+                    <i class="fa-regular fa-eye"></i>
+                    <span id="visitor-count-number">0</span>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- Interactive Terminal Console Module -->
+            <div class="module-box" style="padding:0; overflow:hidden;">
+              <div class="console-box font-mono clickable-element" style="margin-top:0; border:none; height:280px; box-shadow:none;">
+                <div class="console-header">
+                  <div class="console-dots">
+                    <span class="console-dot-red"></span>
+                    <span class="console-dot-yellow"></span>
+                    <span class="console-dot-green"></span>
+                  </div>
+                  <span class="console-title text-xs">govind@tripathi:~</span>
+                </div>
+                <div class="console-body" id="console-output">
+                  <div class="console-line text-zinc-500">// System initialized. Type 'help' or click quick commands below:</div>
+                  <div class="console-line text-emerald-400">govind-tripathi login: success. Welcome, guest user.</div>
+                </div>
+                <div class="console-quick-cmds">
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="help">help</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="skills">skills</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="projects">projects</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="clear">clear</button>
+                </div>
+                <div class="console-input-row">
+                  <span class="console-prompt text-emerald-400">govind-tripathi$</span>
+                  <input type="text" id="console-input" class="console-input font-mono" placeholder="type here..." autocomplete="off">
+                </div>
+              </div>
+            </div>
+
+            <!-- GitHub Contributions Module -->
+            <div class="github-chart-card clickable-element" style="margin-top: 0;">
+              <div class="github-chart-header font-mono text-xs text-muted-foreground mb-2" style="display:flex; justify-content:space-between; width:100%;">
+                <span>[LOG_ID: 08_GH_COMMITS]</span>
+                <span id="github-contrib-total">Activity Calendar</span>
+              </div>
+              <div class="github-chart-wrap">
+                <img src="https://ghchart.rshah.org/ff6600/GovindTripathi22" alt="Govind's GitHub Contributions Calendar" class="github-chart-img">
+              </div>
+              <div class="github-chart-footer font-mono text-xs text-muted-foreground mt-2" style="display:flex; justify-content:space-between; width:100%; font-size: 0.68rem; opacity: 0.8;">
+                <span>USER: @GovindTripathi22</span>
+                <span>GRID STATUS: ACTIVE</span>
+              </div>
+            </div>
+
+          </aside>
+          
+          <!-- Right Panel: Scrollable Workspace Board -->
+          <main class="workspace-board">
             
-            <!-- Controls on Right -->
-            <div class="header-controls-column" style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem; margin-left:auto;">
-              <div class="header-controls" style="display:flex; gap:0.5rem; align-items:center;">
-                <button class="control-btn clickable-element" id="mute-toggle" aria-label="Toggle Audio" style="display:flex; align-items:center; gap:0.4rem;">
-                  <div class="audio-equalizer-bars">
-                    <span class="eq-bar"></span>
-                    <span class="eq-bar"></span>
-                    <span class="eq-bar"></span>
-                  </div>
-                  <i class="fa-solid fa-volume-xmark"></i>
-                </button>
-                <div class="theme-switch-wrap clickable-element" id="theme-toggle" aria-label="Toggle Theme">
-                  <div class="theme-switch-knob">
-                    <i class="fa-solid fa-moon icon-dark"></i>
-                    <i class="fa-solid fa-sun icon-light"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="visitor-counter-wrap font-mono" id="visitor-count-header" style="font-size:0.75rem; color:var(--text-muted); display:flex; align-items:center; gap:0.35rem; margin-top:0.25rem;">
-                <i class="fa-regular fa-eye"></i>
-                <span id="visitor-count-number">0</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="horizontal-rail heading-rail" aria-hidden="true"></div>
-          
-          <!-- Bio details -->
-          <p class="bio-paragraph">
-            I'm Govind, a full-stack developer who builds products with precision.
-            <span class="block mt-3">I blend clean engineering with interaction and visual hierarchy, paying attention to performance, scalability, and the subtle details most people overlook.</span>
-            <span class="block mt-3">I adapt to the stack a product demands, using modern frameworks and scalable systems to ship solutions that feel simple, fast, and intentional.</span>
-          </p>
-          
-          <!-- CTA Action Pills -->
-          <div class="cta-actions">
-            <a href="mailto:govindtripathi62@gmail.com?subject=Inquiry" class="cta-pill fill clickable-element">
-              <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none">
-                <rect x="1" y="1" width="138" height="36" rx="6" />
-              </svg>
-              <span class="btn-text"><i class="fa-solid fa-coffee"></i> Book a call</span>
-            </a>
-            <a href="mailto:govindtripathi62@gmail.com" class="cta-pill outline clickable-element">
-              <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none">
-                <rect x="1" y="1" width="138" height="36" rx="6" />
-              </svg>
-              <span class="btn-text"><i class="fa-solid fa-envelope"></i> Send an email</span>
-            </a>
-          </div>
-          
-          <!-- Social Badges -->
-          <p class="social-header">Here are my <span class="bold">socials</span></p>
-          <div class="social-pills-row">
-            <a href="https://github.com/GovindTripathi22" target="_blank" rel="noopener noreferrer" class="social-pill clickable-element">
-              <i class="fa-brands fa-github"></i> Github
-            </a>
-            <a href="https://linkedin.com/in/govind-t-35360a290" target="_blank" rel="noopener noreferrer" class="social-pill clickable-element">
-              <i class="fa-brands fa-linkedin"></i> LinkedIn
-            </a>
-            <a href="tel:+919699124496" class="social-pill clickable-element">
-              <i class="fa-solid fa-phone"></i> Call
-            </a>
-          </div>
-          
-        </section>
-        
-        <!-- GitHub Contributions Section -->
-        <section class="section-wrap">
-          <div class="section-title-rails">
-            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
-            <h2 class="section-heading">GitHub Contributions</h2>
-            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
-          </div>
-          
-          <div class="github-chart-card clickable-element">
-            <div class="github-chart-header font-mono text-xs text-muted-foreground mb-2" style="display:flex; justify-content:space-between; width:100%;">
-              <span>[LOG_ID: 08_GH_COMMITS]</span>
-              <span id="github-contrib-total">Activity Calendar</span>
-            </div>
-            <div class="github-chart-wrap">
-              <img src="https://ghchart.rshah.org/ff6600/GovindTripathi22" alt="Govind's GitHub Contributions Calendar" class="github-chart-img">
-            </div>
-            <div class="github-chart-footer font-mono text-xs text-muted-foreground mt-2" style="display:flex; justify-content:space-between; width:100%; font-size: 0.68rem; opacity: 0.8;">
-              <span>USER: @GovindTripathi22</span>
-              <span>GRID STATUS: ACTIVE</span>
-            </div>
-          </div>
-        </section>
-        
-        <!-- Projects Section -->
-        <section class="section-wrap">
-          <div class="section-title-rails">
-            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
-            <h2 class="section-heading">Projects</h2>
-            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
-          </div>
-          
-            <div class="projects-grid">
+            <!-- Bio & CTA Core Card -->
+            <section class="section-wrap" style="padding: 1.5rem; background-color: var(--card); border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+              <p class="bio-paragraph" style="margin-top: 0;">
+                I'm Govind, a full-stack developer who builds products with precision.
+                <span class="block mt-3">I blend clean engineering with interaction and visual hierarchy, paying attention to performance, scalability, and the subtle details most people overlook.</span>
+                <span class="block mt-3">I adapt to the stack a product demands, using modern frameworks and scalable systems to ship solutions that feel simple, fast, and intentional.</span>
+              </p>
               
-              <!-- Project 1: PrismHand -->
-              <div class="project-grid-item">
-                <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
-                  <a class="project-card group relative w-full overflow-hidden block" data-project-id="prismhand" href="#" rel="noopener noreferrer">
-                    <!-- Sliding Category Label -->
-                    <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
-                      WebGL / MediaPipe
-                    </span>
-                    
-                    <!-- Fading Hover Mesh background -->
-                    <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div class="gradient-overlay mesh-1 scale-105" style="width:100%; height:100%;"></div>
-                      <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
-                    </div>
-                    
-                    <!-- Sliding Inner Frame containing Visual Image -->
-                    <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
-                      <img src="images/prismhand.jpg" class="object-cover w-full h-full rounded-md" alt="PrismHand Screen">
-                    </div>
-                  </a>
-                </div>
-                <div class="flex flex-col pt-2 gap-1.5">
-                  <div class="flex justify-between pr-2">
-                    <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">PrismHand</span>
-                    <div class="inline-flex items-center gap-1.5">
-                      <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      <span class="font-mono text-xs text-muted-foreground">Code</span>
-                    </div>
-                  </div>
-                  <span class="font-mono text-xs text-muted-foreground">Fingertip Prismatic WebGL Shader sculpting.</span>
-                  <a class="group inline-flex items-center gap-1 w-fit" data-project-id="prismhand" href="#" rel="noopener noreferrer">
-                    <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                  </a>
-                </div>
+              <div class="cta-actions" style="margin-top: 1.5rem;">
+                <a href="mailto:govindtripathi62@gmail.com?subject=Inquiry" class="cta-pill fill clickable-element">
+                  <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
+                  <span class="btn-text"><i class="fa-solid fa-coffee"></i> Book a call</span>
+                </a>
+                <a href="mailto:govindtripathi62@gmail.com" class="cta-pill outline clickable-element">
+                  <svg class="btn-border" viewBox="0 0 140 38" preserveAspectRatio="none"><rect x="1" y="1" width="138" height="36" rx="6" /></svg>
+                  <span class="btn-text"><i class="fa-solid fa-envelope"></i> Send an email</span>
+                </a>
               </div>
-
-              <!-- Project 2: Voyage -->
-              <div class="project-grid-item">
-                <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
-                  <a class="project-card group relative w-full overflow-hidden block" data-project-id="voyage" href="#" rel="noopener noreferrer">
-                    <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
-                      Full Stack Planner
-                    </span>
-                    <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div class="gradient-overlay mesh-2 scale-105" style="width:100%; height:100%;"></div>
-                      <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
-                    </div>
-                    <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
-                      <img src="images/voyage.jpg" class="object-cover w-full h-full rounded-md" alt="Voyage Screen">
-                    </div>
-                  </a>
-                </div>
-                <div class="flex flex-col pt-2 gap-1.5">
-                  <div class="flex justify-between pr-2">
-                    <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">Voyage</span>
-                    <div class="inline-flex items-center gap-1.5">
-                      <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      <span class="font-mono text-xs text-muted-foreground">Live</span>
-                    </div>
-                  </div>
-                  <span class="font-mono text-xs text-muted-foreground">AI-assisted travel planner with dynamic itineraries.</span>
-                  <a class="group inline-flex items-center gap-1 w-fit" data-project-id="voyage" href="#" rel="noopener noreferrer">
-                    <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                  </a>
-                </div>
-              </div>
-
-              <!-- Project 3: Obsidian -->
-              <div class="project-grid-item">
-                <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
-                  <a class="project-card group relative w-full overflow-hidden block" data-project-id="obsidian" href="#" rel="noopener noreferrer">
-                    <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
-                      Canvas Workspace
-                    </span>
-                    <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div class="gradient-overlay mesh-3 scale-105" style="width:100%; height:100%;"></div>
-                      <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
-                    </div>
-                    <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
-                      <img src="images/obsidian.jpg" class="object-cover w-full h-full rounded-md" alt="Obsidian Screen">
-                    </div>
-                  </a>
-                </div>
-                <div class="flex flex-col pt-2 gap-1.5">
-                  <div class="flex justify-between pr-2">
-                    <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">Obsidian</span>
-                    <div class="inline-flex items-center gap-1.5">
-                      <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      <span class="font-mono text-xs text-muted-foreground">Code</span>
-                    </div>
-                  </div>
-                  <span class="font-mono text-xs text-muted-foreground">Offline-first local Markdown workspace with note graph.</span>
-                  <a class="group inline-flex items-center gap-1 w-fit" data-project-id="obsidian" href="#" rel="noopener noreferrer">
-                    <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                  </a>
-                </div>
-              </div>
-
-              <!-- Project 4: OCMS -->
-              <div class="project-grid-item">
-                <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
-                  <a class="project-card group relative w-full overflow-hidden block" data-project-id="ocms" href="#" rel="noopener noreferrer">
-                    <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
-                      Java REST API
-                    </span>
-                    <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                      <div class="gradient-overlay mesh-4 scale-105" style="width:100%; height:100%;"></div>
-                      <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
-                    </div>
-                    <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
-                      <img src="images/ocms.jpg" class="object-cover w-full h-full rounded-md" alt="OCMS Screen">
-                    </div>
-                  </a>
-                </div>
-                <div class="flex flex-col pt-2 gap-1.5">
-                  <div class="flex justify-between pr-2">
-                    <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">OCMS</span>
-                    <div class="inline-flex items-center gap-1.5">
-                      <span class="relative flex h-2 w-2">
-                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-                      </span>
-                      <span class="font-mono text-xs text-muted-foreground">Code</span>
-                    </div>
-                  </div>
-                  <span class="font-mono text-xs text-muted-foreground">Spring Boot college management system with JWT auth.</span>
-                  <a class="group inline-flex items-center gap-1 w-fit" data-project-id="ocms" href="#" rel="noopener noreferrer">
-                    <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
-                  </a>
-                </div>
-              </div>
-
-            </div>
-        </section>
-        
-        <!-- Experiences Section -->
-        <section class="section-wrap">
-          <div class="section-title-rails">
-            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
-            <h2 class="section-heading">Experiences</h2>
-            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
-          </div>
-          
-          <div class="experience-list">
-            <!-- Experience Row Accordion -->
-            <div class="experience-accordion">
-              <button class="experience-trigger clickable-element" aria-expanded="false">
-                <div class="company-logo-frame">
-                  <div class="logo-placeholder">CI</div>
-                </div>
-                <div class="trigger-layout">
-                  <div class="trigger-left">
-                    <div class="company-title-row">
-                      <h3>Click Innovate</h3>
-                      <span class="type-badge">Internship</span>
-                    </div>
-                    <p class="role-title">Full Stack Developer</p>
-                  </div>
-                  <div class="trigger-right">
-                    <div class="time-location">
-                      <span class="duration">Aug, 2025 - Sept, 2025</span>
-                      <i class="fa-solid fa-chevron-down arrow-indicator"></i>
-                    </div>
-                    <span class="location">India - Remote</span>
-                  </div>
-                </div>
-              </button>
               
-              <!-- Accordion Content -->
-              <div class="experience-content">
-                <ul class="bullet-list">
-                  <li>Built scalable full-stack web app using Next.js and TypeScript.</li>
-                  <li>Integrated REST APIs and handled asynchronous data fetching.</li>
-                  <li>Implemented real-time communication modules using Socket.IO.</li>
-                  <li>Managed and configured production deployments on cloud platforms.</li>
-                </ul>
+              <p class="social-header" style="margin-top: 1.5rem; margin-bottom: 0.75rem;">Here are my <span class="bold">socials</span></p>
+              <div class="social-pills-row">
+                <a href="https://github.com/GovindTripathi22" target="_blank" rel="noopener noreferrer" class="social-pill clickable-element">
+                  <i class="fa-brands fa-github"></i> Github
+                </a>
+                <a href="https://linkedin.com/in/govind-t-35360a290" target="_blank" rel="noopener noreferrer" class="social-pill clickable-element">
+                  <i class="fa-brands fa-linkedin"></i> LinkedIn
+                </a>
+                <a href="tel:+919699124496" class="social-pill clickable-element">
+                  <i class="fa-solid fa-phone"></i> Call
+                </a>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Skills & Tech Section -->
-        <section class="section-wrap">
-          <div class="section-title-rails">
-            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
-            <h2 class="section-heading">Skills &amp; Technology</h2>
-            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
-          </div>
-          
-          <div class="skills-tags-cloud">
-            <span class="tech-tag clickable-element">React</span>
-            <span class="tech-tag clickable-element">Next.js</span>
-            <span class="tech-tag clickable-element">Express</span>
-            <span class="tech-tag clickable-element">Node.js</span>
-            <span class="tech-tag clickable-element">Spring Boot</span>
-            <span class="tech-tag clickable-element">Java</span>
-            <span class="tech-tag clickable-element">JavaScript</span>
-            <span class="tech-tag clickable-element">WebGL / Shaders</span>
-            <span class="tech-tag clickable-element">SQL / MySQL</span>
-            <span class="tech-tag clickable-element">MongoDB</span>
-            <span class="tech-tag clickable-element">Docker</span>
-            <span class="tech-tag clickable-element">Git / GitHub</span>
-            <span class="tech-tag clickable-element">Postman</span>
-          </div>
-        </section>
-
-        <!-- Certifications Section -->
-        <section class="section-wrap">
-          <div class="section-title-rails">
-            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
-            <h2 class="section-heading">Certifications</h2>
-            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
-          </div>
-          
-          <div class="certifications-pills">
-            <div class="cert-pill clickable-element">
-              <span class="cert-name">CCNA Cyber Ops</span>
-              <span class="cert-authority">Cisco (2025)</span>
-            </div>
-            <div class="cert-pill clickable-element">
-              <span class="cert-name">Fundamentals of Deep Learning</span>
-              <span class="cert-authority">NVIDIA DLI (2024)</span>
-            </div>
-            <div class="cert-pill clickable-element">
-              <span class="cert-name">Google AI & ML</span>
-              <span class="cert-authority">Google (2024)</span>
-            </div>
-            <div class="cert-pill clickable-element">
-              <span class="cert-name">JS Essentials</span>
-              <span class="cert-authority">Cisco (2024)</span>
-            </div>
-          </div>
-        </section>
-
-        <!-- Interactive Terminal Console Section -->
-        <section class="section-wrap">
-          <div class="section-title-rails">
-            <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
-            <h2 class="section-heading">Terminal Console</h2>
-            <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
-          </div>
-          
-          <div class="console-box font-mono clickable-element">
-            <div class="console-header">
-              <div class="console-dots">
-                <span class="console-dot-red"></span>
-                <span class="console-dot-yellow"></span>
-                <span class="console-dot-green"></span>
+            </section>
+            
+            <!-- Projects Section -->
+            <section class="section-wrap">
+              <div class="section-title-rails">
+                <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
+                <h2 class="section-heading">Projects</h2>
+                <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
               </div>
-              <span class="console-title text-xs">govind@tripathi:~</span>
-            </div>
-            <div class="console-body" id="console-output">
-              <div class="console-line text-zinc-500">// System initialized. Type 'help' or click quick commands below:</div>
-              <div class="console-line text-emerald-400">govind-tripathi login: success. Welcome, guest user.</div>
-            </div>
-            <div class="console-quick-cmds">
-              <button class="cmd-pill text-xs clickable-element" data-cmd="help">help</button>
-              <button class="cmd-pill text-xs clickable-element" data-cmd="skills">skills</button>
-              <button class="cmd-pill text-xs clickable-element" data-cmd="projects">projects</button>
-              <button class="cmd-pill text-xs clickable-element" data-cmd="clear">clear</button>
-            </div>
-            <div class="console-input-row">
-              <span class="console-prompt text-emerald-400">govind-tripathi$</span>
-              <input type="text" id="console-input" class="console-input font-mono" placeholder="type here..." autocomplete="off">
-            </div>
-          </div>
-        </section>
+              
+              <div class="projects-grid">
+                
+                <!-- Project 1: PrismHand -->
+                <div class="project-grid-item">
+                  <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
+                    <a class="project-card group relative w-full overflow-hidden block" data-project-id="prismhand" href="#" rel="noopener noreferrer">
+                      <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
+                        WebGL / MediaPipe
+                      </span>
+                      <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <div class="gradient-overlay mesh-1 scale-105" style="width:100%; height:100%;"></div>
+                        <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
+                      </div>
+                      <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
+                        <img src="images/prismhand.jpg" class="object-cover w-full h-full rounded-md" alt="PrismHand Screen">
+                      </div>
+                    </a>
+                  </div>
+                  <div class="flex flex-col pt-2 gap-1.5">
+                    <div class="flex justify-between pr-2">
+                      <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">PrismHand</span>
+                      <div class="inline-flex items-center gap-1.5">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="font-mono text-xs text-muted-foreground">Code</span>
+                      </div>
+                    </div>
+                    <span class="font-mono text-xs text-muted-foreground">Fingertip Prismatic WebGL Shader sculpting.</span>
+                    <a class="group inline-flex items-center gap-1 w-fit" data-project-id="prismhand" href="#" rel="noopener noreferrer">
+                      <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                  </div>
+                </div>
 
+                <!-- Project 2: Voyage -->
+                <div class="project-grid-item">
+                  <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
+                    <a class="project-card group relative w-full overflow-hidden block" data-project-id="voyage" href="#" rel="noopener noreferrer">
+                      <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
+                        Full Stack Planner
+                      </span>
+                      <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <div class="gradient-overlay mesh-2 scale-105" style="width:100%; height:100%;"></div>
+                        <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
+                      </div>
+                      <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
+                        <img src="images/voyage.jpg" class="object-cover w-full h-full rounded-md" alt="Voyage Screen">
+                      </div>
+                    </a>
+                  </div>
+                  <div class="flex flex-col pt-2 gap-1.5">
+                    <div class="flex justify-between pr-2">
+                      <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">Voyage</span>
+                      <div class="inline-flex items-center gap-1.5">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="font-mono text-xs text-muted-foreground">Live</span>
+                      </div>
+                    </div>
+                    <span class="font-mono text-xs text-muted-foreground">AI-assisted travel planner with dynamic itineraries.</span>
+                    <a class="group inline-flex items-center gap-1 w-fit" data-project-id="voyage" href="#" rel="noopener noreferrer">
+                      <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Project 3: Obsidian -->
+                <div class="project-grid-item">
+                  <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
+                    <a class="project-card group relative w-full overflow-hidden block" data-project-id="obsidian" href="#" rel="noopener noreferrer">
+                      <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
+                        Canvas Workspace
+                      </span>
+                      <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <div class="gradient-overlay mesh-3 scale-105" style="width:100%; height:100%;"></div>
+                        <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
+                      </div>
+                      <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
+                        <img src="images/obsidian.jpg" class="object-cover w-full h-full rounded-md" alt="Obsidian Screen">
+                      </div>
+                    </a>
+                  </div>
+                  <div class="flex flex-col pt-2 gap-1.5">
+                    <div class="flex justify-between pr-2">
+                      <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">Obsidian</span>
+                      <div class="inline-flex items-center gap-1.5">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="font-mono text-xs text-muted-foreground">Code</span>
+                      </div>
+                    </div>
+                    <span class="font-mono text-xs text-muted-foreground">Offline-first local Markdown workspace with note graph.</span>
+                    <a class="group inline-flex items-center gap-1 w-fit" data-project-id="obsidian" href="#" rel="noopener noreferrer">
+                      <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                  </div>
+                </div>
+
+                <!-- Project 4: OCMS -->
+                <div class="project-grid-item">
+                  <div class="border rounded-md p-1 border-zinc-200 dark:border-zinc-800">
+                    <a class="project-card group relative w-full overflow-hidden block" data-project-id="ocms" href="#" rel="noopener noreferrer">
+                      <span class="absolute left-3 top-3 z-20 font-mono text-xs text-muted-foreground transition-all duration-300 group-hover:left-1/2 group-hover:top-3 group-hover:-translate-x-1/2 group-hover:font-semibold group-hover:text-zinc-850 dark:group-hover:text-zinc-150">
+                        Java REST API
+                      </span>
+                      <div class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                        <div class="gradient-overlay mesh-4 scale-105" style="width:100%; height:100%;"></div>
+                        <div class="absolute inset-0 bg-black/5 dark:bg-black/20"></div>
+                      </div>
+                      <div class="mt-12 relative h-48 w-full overflow-hidden rounded-md border-2 border-white dark:border-black transition-transform duration-300 ease-out group-hover:translate-y-4 shadow-sm">
+                        <img src="images/ocms.jpg" class="object-cover w-full h-full rounded-md" alt="OCMS Screen">
+                      </div>
+                    </a>
+                  </div>
+                  <div class="flex flex-col pt-2 gap-1.5">
+                    <div class="flex justify-between pr-2">
+                      <span class="font-mono font-bold text-zinc-800 dark:text-zinc-200 text-sm">OCMS</span>
+                      <div class="inline-flex items-center gap-1.5">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span class="font-mono text-xs text-muted-foreground">Code</span>
+                      </div>
+                    </div>
+                    <span class="font-mono text-xs text-muted-foreground">Spring Boot college management system with JWT auth.</span>
+                    <a class="group inline-flex items-center gap-1 w-fit" data-project-id="ocms" href="#" rel="noopener noreferrer">
+                      <span class="font-mono cursor-pointer text-xs hover:text-zinc-800 dark:hover:text-zinc-200 text-muted-foreground">View Details</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-right -rotate-45 text-zinc-400 h-3.5 w-3.5 transition-transform duration-300 group-hover:rotate-0"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </section>
+            
+            <!-- Experiences Section -->
+            <section class="section-wrap">
+              <div class="section-title-rails">
+                <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
+                <h2 class="section-heading">Experiences</h2>
+                <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
+              </div>
+              
+              <div class="experience-list">
+                <div class="experience-accordion">
+                  <button class="experience-trigger clickable-element" aria-expanded="false">
+                    <div class="company-logo-frame">
+                      <div class="logo-placeholder">CI</div>
+                    </div>
+                    <div class="trigger-layout">
+                      <div class="trigger-left">
+                        <div class="company-title-row">
+                          <h3>Click Innovate</h3>
+                          <span class="type-badge">Internship</span>
+                        </div>
+                        <p class="role-title">Full Stack Developer</p>
+                      </div>
+                      <div class="trigger-right">
+                        <div class="time-location">
+                          <span class="duration">Aug, 2025 - Sept, 2025</span>
+                          <i class="fa-solid fa-chevron-down arrow-indicator"></i>
+                        </div>
+                        <span class="location">India - Remote</span>
+                      </div>
+                    </div>
+                  </button>
+                  <div class="experience-content">
+                    <ul class="bullet-list">
+                      <li>Built scalable full-stack web app using Next.js and TypeScript.</li>
+                      <li>Integrated REST APIs and handled asynchronous data fetching.</li>
+                      <li>Implemented real-time communication modules using Socket.IO.</li>
+                      <li>Managed and configured production deployments on cloud platforms.</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="section-wrap">
+              <div class="section-title-rails">
+                <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
+                <h2 class="section-heading">Skills &amp; Technology</h2>
+                <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
+              </div>
+              
+              <div class="skills-tags-cloud">
+                <span class="tech-tag clickable-element">React</span>
+                <span class="tech-tag clickable-element">Next.js</span>
+                <span class="tech-tag clickable-element">Express</span>
+                <span class="tech-tag clickable-element">Node.js</span>
+                <span class="tech-tag clickable-element">Spring Boot</span>
+                <span class="tech-tag clickable-element">Java</span>
+                <span class="tech-tag clickable-element">JavaScript</span>
+                <span class="tech-tag clickable-element">WebGL / Shaders</span>
+                <span class="tech-tag clickable-element">SQL / MySQL</span>
+                <span class="tech-tag clickable-element">MongoDB</span>
+                <span class="tech-tag clickable-element">Docker</span>
+                <span class="tech-tag clickable-element">Git / GitHub</span>
+                <span class="tech-tag clickable-element">Postman</span>
+              </div>
+            </section>
+
+            <!-- Certifications Section -->
+            <section class="section-wrap">
+              <div class="section-title-rails">
+                <div class="horizontal-rail title-top-rail" aria-hidden="true"></div>
+                <h2 class="section-heading">Certifications</h2>
+                <div class="horizontal-rail title-bottom-rail" aria-hidden="true"></div>
+              </div>
+              
+              <div class="certifications-pills">
+                <div class="cert-pill clickable-element">
+                  <span class="cert-name">CCNA Cyber Ops</span>
+                  <span class="cert-authority">Cisco (2025)</span>
+                </div>
+                <div class="cert-pill clickable-element">
+                  <span class="cert-name">Fundamentals of Deep Learning</span>
+                  <span class="cert-authority">NVIDIA DLI (2024)</span>
+                </div>
+                <div class="cert-pill clickable-element">
+                  <span class="cert-name">Google AI & ML</span>
+                  <span class="cert-authority">Google (2024)</span>
+                </div>
+                <div class="cert-pill clickable-element">
+                  <span class="cert-name">JS Essentials</span>
+                  <span class="cert-authority">Cisco (2024)</span>
+                </div>
+              </div>
+            </section>
+
+          </main>
+          
+        </div>
+        
       </div>
       
       <!-- Bottom Dot Grid Matrix Band -->

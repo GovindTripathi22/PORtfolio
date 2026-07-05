@@ -2158,3 +2158,100 @@ body:not(.sound-muted) .eq-bar {
   from { opacity: 0.3; transform: scale(0.9); }
   to { opacity: 1; transform: scale(1.1); }
 }
+
+/* Split Workspace Dashboard Layout */
+.split-workspace {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .split-workspace {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.workspace-sidebar {
+  position: sticky;
+  top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
+}
+
+@media (max-width: 1024px) {
+  .workspace-sidebar {
+    position: relative;
+    top: 0;
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+.workspace-board {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* Premium Blueprint Coordinate Grid Overlay Background */
+body {
+  background-color: var(--background);
+  background-image: 
+    linear-gradient(rgba(255, 102, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 102, 0, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center;
+  transition: background-image 0.3s;
+}
+
+[data-theme="light"] body {
+  background-image: 
+    linear-gradient(rgba(0, 0, 0, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.015) 1px, transparent 1px);
+}
+
+/* Glassy Bento Card Details & Corner Crosshairs */
+.module-box, .github-chart-card, .section-wrap {
+  position: relative;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+}
+
+/* Corner bracket details */
+.module-box::before, .github-chart-card::before, .section-wrap::before {
+  content: "+";
+  position: absolute;
+  top: -8px;
+  left: -4px;
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.module-box::after, .github-chart-card::after, .section-wrap::after {
+  content: "+";
+  position: absolute;
+  bottom: -9px;
+  right: -4px;
+  color: var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.module-box:hover, .github-chart-card:hover {
+  border-color: var(--accent-cyan);
+  box-shadow: 0 8px 30px rgba(255, 102, 0, 0.08);
+}
