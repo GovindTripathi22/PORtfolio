@@ -2183,7 +2183,61 @@ body:not(.sound-muted) .eq-bar {
   gap: 1.5rem;
   max-height: calc(100vh - 4rem);
   overflow-y: auto;
-  padding-right: 0.25rem;
+  padding-right: 0.35rem;
+}
+
+/* Sidebar scrollbar styling */
+.workspace-sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+.workspace-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.workspace-sidebar::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+.workspace-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+
+/* GitHub Contribution Chart Cards */
+.github-chart-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+}
+.github-chart-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255, 102, 0, 0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.github-chart-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+.github-chart-img {
+  max-width: 100%;
+  height: auto;
+  min-width: 270px;
+  object-fit: contain;
+}
+[data-theme="dark"] .github-chart-img {
+  filter: saturate(1.4) brightness(1.2) drop-shadow(0 0 4px rgba(255, 102, 0, 0.15));
 }
 
 @media (max-width: 1024px) {
@@ -2192,6 +2246,7 @@ body:not(.sound-muted) .eq-bar {
     top: 0;
     max-height: none;
     overflow-y: visible;
+    padding-right: 0;
   }
 }
 
