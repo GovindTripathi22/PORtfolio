@@ -24,7 +24,7 @@
   --dot-color: #3f3f46;        /* Visible Zinc-700 dot grids */
   
   --page-gutter: 1.5rem;
-  --content-max: 42rem;        /* 672px max-width, matching manasr.dev exactly */
+  --content-max: 76rem;        /* 1216px max-width, optimized for dashboard layout */
   --dot-band-height: 100px;
   
   --font-sans: 'Outfit', sans-serif;
@@ -2254,4 +2254,67 @@ body {
 .module-box:hover, .github-chart-card:hover {
   border-color: var(--accent-cyan);
   box-shadow: 0 8px 30px rgba(255, 102, 0, 0.08);
+}
+
+/* Sidebar Header Stacking Layout (Desktop Only) */
+@media (min-width: 1025px) {
+  .workspace-sidebar .header-flex {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .workspace-sidebar .profile-details {
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .workspace-sidebar .header-controls-column {
+    margin-left: 0 !important;
+    align-items: center !important;
+    width: 100%;
+    flex-direction: row !important;
+    justify-content: space-between;
+    border-top: 1px dashed var(--border);
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .workspace-sidebar .profile-avatar-frame {
+    margin-right: 0;
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Responsive Scaling Queries */
+@media (max-width: 1024px) {
+  :root {
+    --content-max: 42rem; /* Retain original narrow view on tablet/mobile */
+  }
+  
+  /* Reset layout structure back to stacked columns */
+  .split-workspace {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .workspace-sidebar {
+    position: relative;
+    top: 0;
+    max-height: none;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr; /* Collapse projects to single column */
+    gap: 1.5rem;
+  }
 }
