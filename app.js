@@ -309,8 +309,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     playThemeChime(target === 'dark');
 
-    // If startViewTransition is not supported or event is missing, fallback to simple toggle
-    if (!document.startViewTransition || !e) {
+    // Fallback: no View Transition support or no click event
+    if (!document.startViewTransition || !e?.clientX) {
       document.body.setAttribute('data-theme', target);
       localStorage.setItem('theme', target);
       return;
@@ -318,29 +318,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const x = e.clientX;
     const y = e.clientY;
+
+    // Expand radius to the farthest corner of the viewport from click point
     const endRadius = Math.hypot(
       Math.max(x, window.innerWidth - x),
       Math.max(y, window.innerHeight - y)
     );
 
+    // Begin the native View Transition
     const transition = document.startViewTransition(() => {
       document.body.setAttribute('data-theme', target);
       localStorage.setItem('theme', target);
     });
 
+    // Once both snapshots are captured and the new one is ready to paint,
+    // animate a circle reveal expanding from the click point.
+    // We always expand ::view-transition-new(root) — it is on top (z-index 9999 in CSS).
     transition.ready.then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`
-      ];
       document.documentElement.animate(
         {
-          clipPath: target === 'light' ? clipPath : clipPath.reverse()
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${endRadius}px at ${x}px ${y}px)`
+          ]
         },
         {
-          duration: 500,
-          easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-          pseudoElement: target === 'light' ? '::view-transition-new(root)' : '::view-transition-old(root)'
+          duration: 550,
+          easing: 'cubic-bezier(0.22, 1, 0.36, 1)', // ease-out-quint — fast start, silky stop
+          pseudoElement: '::view-transition-new(root)',
+          fill: 'forwards'
         }
       );
     });

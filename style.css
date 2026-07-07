@@ -81,7 +81,8 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  /* No CSS transitions on body — theme changes are handled exclusively by
+     the View Transition API clip-path animation to avoid jitter/double-fading */
   cursor: default; /* Default browser cursor */
 }
 
@@ -2458,30 +2459,30 @@ body {
   opacity: 0 !important;
 }
 
-/* Custom View Transition circular clip-path reveal styles */
+/* ============================================================
+   View Transition API — Premium circular ripple theme switch
+   The new snapshot always sits on top and is clipped by the
+   JS-driven circle animation. No CSS default animations needed.
+   ============================================================ */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
+  /* Disable default browser cross-fade — we drive it entirely in JS */
+  animation: none !important;
+  mix-blend-mode: normal !important;
 }
 
-/* In dark mode to light mode transition, light mode grows from button */
-[data-theme="light"]::view-transition-old(root) {
-  z-index: 1;
-}
-[data-theme="light"]::view-transition-new(root) {
+/* New theme snapshot always on top so the clip-path reveal works correctly */
+::view-transition-new(root) {
   z-index: 9999;
 }
-
-/* In light mode to dark mode transition, dark mode grows (revealed by shrinking clip-path or inverse old overlay) */
-[data-theme="dark"]::view-transition-old(root) {
-  z-index: 9999;
-}
-[data-theme="dark"]::view-transition-new(root) {
+::view-transition-old(root) {
   z-index: 1;
 }
 
-/* Ultimate GitHub Contribution Calendar filter visibility override */
-[data-theme="dark"] .github-chart-img {
-  filter: invert(1) hue-rotate(180deg) saturate(1.4) brightness(1.2) drop-shadow(0 0 6px rgba(255, 102, 0, 0.25));
+/* Prevent any element-level transitions from fighting the page snapshot */
+:root:has(::view-transition) *,
+:root:has(::view-transition) *::before,
+:root:has(::view-transition) *::after {
+  transition: none !important;
+  animation: none !important;
 }
