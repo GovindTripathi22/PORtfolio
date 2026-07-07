@@ -343,8 +343,8 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          duration: 550,
-          easing: 'cubic-bezier(0.22, 1, 0.36, 1)', // ease-out-quint — fast start, silky stop
+          duration: 850,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // ease-out-expo — ultra-buttery deceleration
           pseudoElement: '::view-transition-new(root)',
           fill: 'forwards'
         }
