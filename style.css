@@ -2486,3 +2486,89 @@ body {
   transition: none !important;
   animation: none !important;
 }
+
+/* --- High Tech Avatar HUD scanner overlay --- */
+.profile-avatar-frame {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.avatar-hud-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  z-index: 10;
+  background: rgba(6, 182, 212, 0.05); /* Cyan glow overlay tint */
+}
+
+.profile-avatar-frame.hud-active .avatar-hud-overlay {
+  opacity: 1;
+}
+
+.hud-scanner-ring {
+  position: absolute;
+  inset: 8px;
+  border: 1.5px dashed var(--accent-cyan);
+  border-radius: 50%;
+  opacity: 0.65;
+  transform: rotate(0deg);
+}
+
+.profile-avatar-frame.hud-active .hud-scanner-ring {
+  animation: rotateHUD 6s linear infinite;
+}
+
+.hud-scan-line {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+  opacity: 0.8;
+  top: 0;
+}
+
+.profile-avatar-frame.hud-active .hud-scan-line {
+  animation: scanHUD 2.5s ease-in-out infinite alternate;
+}
+
+.hud-meta {
+  position: absolute;
+  font-size: 0.5rem;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 5px var(--accent-cyan);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  opacity: 0.85;
+}
+
+.hud-meta-top {
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hud-meta-bottom {
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.hud-meta-left {
+  top: 50%;
+  left: -2px;
+  transform: translateY(-50%) rotate(-90deg);
+}
+
+@keyframes rotateHUD {
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes scanHUD {
+  0% { top: 2%; }
+  100% { top: 98%; }
+}

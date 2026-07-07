@@ -343,8 +343,8 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         },
         {
-          duration: 850,
-          easing: 'cubic-bezier(0.16, 1, 0.3, 1)', // ease-out-expo — ultra-buttery deceleration
+          duration: 1400,
+          easing: 'cubic-bezier(0.1, 1, 0.1, 1)', // very slow, silky, buttery sweep reveal
           pseudoElement: '::view-transition-new(root)',
           fill: 'forwards'
         }
@@ -652,6 +652,30 @@ document.addEventListener('DOMContentLoaded', () => {
         printLine('=== WEB SYNTHESIZER ACTIVE ===', 'text-amber-400');
         printLine('Keyboard keys [A, S, D, F, G, H, J, K] are now playable notes!', 'text-zinc-400');
         triggerSynthPiano();
+        return;
+      }
+
+      if (cleanCmd === 'hack') {
+        printLine('>> [INITIATING OVERRIDE BYPASS SUITE...]', 'text-cyan-400 font-bold');
+        let step = 0;
+        const steps = [
+          { text: 'Connecting to proxy matrix: [PORT 22] ... OK', delay: 400, color: 'text-zinc-400' },
+          { text: 'Retracing gateway coordinates: @GovindTripathi22 ... OK', delay: 800, color: 'text-zinc-400' },
+          { text: 'Bypassing firewall authentication handshake...', delay: 1200, color: 'text-amber-500' },
+          { text: 'Injecting kernel credentials payload... [██████░░░░] 60%', delay: 1600, color: 'text-amber-500' },
+          { text: 'Exploiting stack overflow entrypoint... [██████████] 100%', delay: 2000, color: 'text-emerald-400' },
+          { text: 'ACCESS GRANTED: Profile decrypted. Welcome Administrator.', delay: 2400, color: 'text-emerald-400 font-bold' }
+        ];
+        steps.forEach(s => {
+          setTimeout(() => {
+            printLine(s.text, s.color);
+            playBeepTone(500 + (step * 100), 0.08, 'triangle');
+            step++;
+            if (step === steps.length) {
+              playRetroLevelUpChime();
+            }
+          }, s.delay);
+        });
         return;
       }
       
@@ -1468,7 +1492,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // 5B. Interactive Profile HUD scanner overlay
+  function initAvatarHUD() {
+    const avatarFrame = document.querySelector('.profile-avatar-frame');
+    if (!avatarFrame) return;
+
+    const hudContainer = document.createElement('div');
+    hudContainer.className = 'avatar-hud-overlay';
+    hudContainer.innerHTML = `
+      <div class="hud-scanner-ring"></div>
+      <div class="hud-scan-line"></div>
+      <div class="hud-meta hud-meta-top font-mono">SYS_OK: 200</div>
+      <div class="hud-meta hud-meta-bottom font-mono">DEV: ACTIVE</div>
+      <div class="hud-meta hud-meta-left font-mono">C5_D8</div>
+    `;
+    avatarFrame.appendChild(hudContainer);
+
+    avatarFrame.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playSystemSweep(900, 300, 'sine', 0.6);
+      
+      avatarFrame.classList.add('hud-active');
+      
+      const consoleOutput = document.getElementById('console-output');
+      if (consoleOutput) {
+        const line = document.createElement('div');
+        line.className = 'console-line text-cyan-400 font-bold';
+        line.textContent = '>> [DIAGNOSTIC SCAN INITIATED ON USER_AVATAR]';
+        consoleOutput.appendChild(line);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+      }
+      
+      setTimeout(() => {
+        avatarFrame.classList.remove('hud-active');
+      }, 5000);
+    });
+  }
+
   // Run on start
+  initAvatarHUD();
   drawGithubContributions();
   initVisitorCounter();
   fetchGithubStats();
