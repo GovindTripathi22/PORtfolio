@@ -1529,12 +1529,96 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // 5C. Parallax & Motion Engine (Scroll & Mouse parallax + 3D Card tilt)
+  function initParallaxEngine() {
+    const parallaxNodes = document.querySelectorAll('[data-parallax-speed]');
+    const mouseOrbs = document.querySelectorAll('[data-parallax-mouse]');
+    const projectImages = document.querySelectorAll('.project-card div.mt-12 img');
+    
+    let ticking = false;
+    let latestScrollY = window.scrollY;
+
+    function updateParallax() {
+      // 1. Junction nodes scroll parallax offset
+      parallaxNodes.forEach(node => {
+        const speed = parseFloat(node.getAttribute('data-parallax-speed')) || 0.1;
+        const translateY = latestScrollY * speed;
+        node.style.transform = `translateY(${translateY}px)`;
+      });
+
+      // 2. Project Card Image Parallax Shift inside container
+      projectImages.forEach(img => {
+        const card = img.closest('.project-card');
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        const viewHeight = window.innerHeight;
+        // Calculate normalized scroll progress (-1 to 1) relative to viewport center
+        const progress = (rect.top + rect.height / 2 - viewHeight / 2) / (viewHeight / 2);
+        const shiftY = Math.max(-15, Math.min(15, progress * -12));
+        img.style.transform = `scale(1.05) translateY(${shiftY}px)`;
+      });
+
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      latestScrollY = window.scrollY;
+      if (!ticking) {
+        window.requestAnimationFrame(updateParallax);
+        ticking = true;
+      }
+    }, { passive: true });
+
+    // Mouse parallax for ambient glow orbs
+    window.addEventListener('mousemove', (e) => {
+      const mouseX = (e.clientX - window.innerWidth / 2);
+      const mouseY = (e.clientY - window.innerHeight / 2);
+
+      mouseOrbs.forEach(orb => {
+        const factor = parseFloat(orb.getAttribute('data-parallax-mouse')) || 0.02;
+        const offsetX = mouseX * factor;
+        const offsetY = mouseY * factor;
+        orb.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`;
+      });
+    }, { passive: true });
+
+    updateParallax();
+  }
+
+  // 5D. Interactive 3D Card Tilt Engine
+  function initCard3DTilt() {
+    const cards = document.querySelectorAll('.project-card');
+
+    cards.forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = ((y - centerY) / centerY) * -8;
+        const rotateY = ((x - centerX) / centerX) * 8;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateZ(6px)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)`;
+      });
+    });
+  }
+
   // Run on start
   initAvatarHUD();
   drawGithubContributions();
   initVisitorCounter();
   fetchGithubStats();
+  initParallaxEngine();
+  initCard3DTilt();
   setInterval(updateActiveUsers, 8000);
   updateActiveUsers();
   checkHashRoute();
 });
+

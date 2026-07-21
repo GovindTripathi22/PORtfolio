@@ -36,23 +36,27 @@
   <!-- Background WebGL Shader (very subtle behind everything) -->
   <canvas id="gl-canvas"></canvas>
 
+  <!-- Ambient Parallax Orbs -->
+  <div class="parallax-orb parallax-orb-1" data-parallax-mouse="-0.03" aria-hidden="true"></div>
+  <div class="parallax-orb parallax-orb-2" data-parallax-mouse="0.04" aria-hidden="true"></div>
+
   <!-- Page Shell (Centered 840px content strip flanked by vertical rails) -->
   <div class="page-shell">
     
     <!-- Left & Right Side Margin Rails -->
     <div class="side-rail side-rail-left" aria-hidden="true">
-      <div class="junction-node" style="top: 0;"></div>
-      <div class="junction-node" style="top: 100px;"></div>
-      <div class="junction-node" style="top: 220px;"></div>
-      <div class="junction-node" style="top: 50%;"></div>
-      <div class="junction-node" style="top: 80%;"></div>
+      <div class="junction-node" data-parallax-speed="0.1" style="top: 0;"></div>
+      <div class="junction-node" data-parallax-speed="-0.08" style="top: 100px;"></div>
+      <div class="junction-node" data-parallax-speed="0.15" style="top: 220px;"></div>
+      <div class="junction-node" data-parallax-speed="-0.12" style="top: 50%;"></div>
+      <div class="junction-node" data-parallax-speed="0.2" style="top: 80%;"></div>
     </div>
     <div class="side-rail side-rail-right" aria-hidden="true">
-      <div class="junction-node" style="top: 0;"></div>
-      <div class="junction-node" style="top: 100px;"></div>
-      <div class="junction-node" style="top: 220px;"></div>
-      <div class="junction-node" style="top: 50%;"></div>
-      <div class="junction-node" style="top: 80%;"></div>
+      <div class="junction-node" data-parallax-speed="-0.1" style="top: 0;"></div>
+      <div class="junction-node" data-parallax-speed="0.12" style="top: 100px;"></div>
+      <div class="junction-node" data-parallax-speed="-0.15" style="top: 220px;"></div>
+      <div class="junction-node" data-parallax-speed="0.18" style="top: 50%;"></div>
+      <div class="junction-node" data-parallax-speed="-0.2" style="top: 80%;"></div>
     </div>
     
     <div class="content-strip">

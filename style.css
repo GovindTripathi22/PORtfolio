@@ -2572,3 +2572,78 @@ body {
   0% { top: 2%; }
   100% { top: 98%; }
 }
+
+/* ==========================================================================
+   Modern Aesthetic & Parallax Engine Enhancements
+   ========================================================================== */
+
+/* Perspective container for 3D card tilt effects */
+.project-grid-item {
+  perspective: 1000px;
+}
+
+.project-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.15s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.project-card:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35), 0 0 20px rgba(var(--accent-cyan-rgb), 0.2);
+}
+
+/* Scroll Parallax Image Container */
+.project-card div.mt-12 img {
+  will-change: transform;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+/* Ambient Floating Parallax Glow Orbs */
+.parallax-orb {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -2;
+  filter: blur(60px);
+  opacity: 0.15;
+  will-change: transform;
+  transition: opacity 0.5s ease;
+}
+
+.parallax-orb-1 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, var(--accent-cyan) 0%, transparent 70%);
+  top: 15%;
+  left: 10%;
+}
+
+.parallax-orb-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, var(--accent-orchid) 0%, transparent 70%);
+  top: 60%;
+  right: 12%;
+}
+
+[data-theme="light"] .parallax-orb {
+  opacity: 0.08;
+}
+
+/* Smooth Parallax Junction Nodes in Side Rails */
+.junction-node {
+  will-change: transform;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.junction-node.active-parallax {
+  background-color: var(--accent-cyan);
+  box-shadow: 0 0 10px var(--accent-cyan);
+}
+
+/* Section Title Parallax Drift Accent */
+.section-heading-main {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
