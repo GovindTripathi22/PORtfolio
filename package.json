@@ -1,0 +1,9 @@
+{
+  "name": "govind-portfolio",
+  "version": "1.0.0",
+  "description": "Govind Tripathi Portfolio",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve ."
+  }
+}

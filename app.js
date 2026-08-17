@@ -157,6 +157,64 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
+  // Synthesized pentatonic melodic note for contribution cell hover
+  function playCellNote(lvl = 0) {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const notes = [261.63, 329.63, 392.00, 523.25, 659.25]; // C4, E4, G4, C5, E5
+      const freq = notes[Math.min(Math.max(0, lvl), notes.length - 1)];
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(0.015, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.09);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.09);
+    } catch (e) {}
+  }
+
+  // Soft cybernetic shimmer for project card hover
+  function playCardHoverSound() {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+      gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.08);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    } catch (e) {}
+  }
+
+  // Smooth number counter animation helper
+  function animateCounter(el, start, end, duration = 1200, formatFn = (v) => v) {
+    if (!el) return;
+    const startTime = performance.now();
+    function update(now) {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      const current = Math.floor(start + (end - start) * ease);
+      el.innerHTML = formatFn(current);
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.innerHTML = formatFn(end);
+      }
+    }
+    requestAnimationFrame(update);
+  }
+
   // Toggle Mute Action
   muteToggle.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -723,30 +781,29 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeCountEl = document.getElementById('active-count');
 
   async function initVisitorCounter() {
-    let visits = 1420; // Default fallback
+    let visits = 1420;
     try {
-      const response = await fetch('https://api.counterapi.dev/v1/govindtripathi-portfolio/hits/up');
-      if (response.ok) {
-        const data = await response.json();
-        visits = data.count;
-      } else {
-        throw new Error('API response not OK');
-      }
-    } catch (err) {
-      console.warn("Counter API failed, fallback to local storage:", err);
       let localVisits = localStorage.getItem('visitor_count');
       if (!localVisits) {
-        localVisits = Math.floor(1380 + Math.random() * 100);
+        localVisits = 1420;
       }
-      visits = parseInt(localVisits, 10) + 1;
+      const sessionKey = 'govind_visited_session';
+      if (!sessionStorage.getItem(sessionKey)) {
+        visits = parseInt(localVisits, 10) + 1;
+        sessionStorage.setItem(sessionKey, 'true');
+        localStorage.setItem('visitor_count', visits);
+      } else {
+        visits = parseInt(localVisits, 10);
+      }
+    } catch (err) {
+      visits = 1421;
     }
-    localStorage.setItem('visitor_count', visits);
 
     if (visitorCountEl) {
-      visitorCountEl.innerHTML = `<i class="fa-solid fa-users"></i> VISITORS: ${visits}`;
+      animateCounter(visitorCountEl, 0, visits, 1400, (v) => `<i class="fa-solid fa-users"></i> VISITORS: ${v}`);
     }
     if (visitorCountNumberEl) {
-      visitorCountNumberEl.textContent = Number(visits).toLocaleString();
+      animateCounter(visitorCountNumberEl, 0, visits, 1400, (v) => Number(v).toLocaleString());
     }
   }
 
@@ -1438,7 +1495,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initTerminalDots();
 
-  // 6. Draw Native GitHub Contributions Glow Grid
+  // 6. Draw Native GitHub Contributions Glow Grid with Staggered Waves & Harmonic Chimes
   function drawGithubContributions() {
     const container = document.getElementById('github-grid-container');
     if (!container) return;
@@ -1448,47 +1505,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const grid = document.createElement('div');
     grid.className = 'github-grid-matrix';
     
-    const totalCells = 24 * 7;
+    const COLS = 24;
+    const ROWS = 7;
+    const totalCells = COLS * ROWS;
     let totalCommits = 0;
     
-    for (let i = 0; i < totalCells; i++) {
-      const cell = document.createElement('div');
-      
-      let commits = 0;
-      const rand = Math.random();
-      if (rand > 0.82) {
-        commits = Math.floor(Math.random() * 3) + 1;
-      } else if (rand > 0.95) {
-        commits = Math.floor(Math.random() * 6) + 4;
+    // Deterministic pseudo-random generation for realistic activity patterns
+    const seed = 42;
+    function seededRand(n) {
+      return ((Math.sin(n * seed + 1) * 43758.5453123) % 1 + 1) % 1;
+    }
+    
+    for (let c = 0; c < COLS; c++) {
+      for (let r = 0; r < ROWS; r++) {
+        const i = c * ROWS + r;
+        const cell = document.createElement('div');
+        const rand = seededRand(i);
+        
+        let commits = 0;
+        if (rand > 0.72) commits = Math.floor(seededRand(i + 50) * 3) + 1;
+        if (rand > 0.88) commits = Math.floor(seededRand(i + 150) * 5) + 3;
+        if (rand > 0.96) commits = Math.floor(seededRand(i + 300) * 6) + 7;
+        
+        totalCommits += commits;
+        
+        let lvl = 0;
+        if (commits >= 1 && commits <= 2) lvl = 1;
+        else if (commits >= 3 && commits <= 5) lvl = 2;
+        else if (commits >= 6 && commits <= 8) lvl = 3;
+        else if (commits >= 9) lvl = 4;
+        
+        cell.className = `contrib-cell lvl-${lvl} clickable-element`;
+        // Staggered wave animation delay from top-left to bottom-right
+        cell.style.animationDelay = `${(c * 22 + r * 16)}ms`;
+        
+        const daysAgo = totalCells - 1 - i;
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        
+        cell.title = commits > 0 
+          ? `${commits} commit${commits > 1 ? 's' : ''} on ${dateStr}` 
+          : `No commits on ${dateStr}`;
+        
+        // Interactive harmonic musical chime on hover
+        cell.addEventListener('mouseenter', () => {
+          if (commits > 0) {
+            playCellNote(lvl);
+          } else {
+            playHoverTick();
+          }
+        });
+        
+        grid.appendChild(cell);
       }
-      
-      totalCommits += commits;
-      
-      let lvl = 0;
-      if (commits > 0 && commits <= 2) lvl = 1;
-      else if (commits > 2 && commits <= 4) lvl = 2;
-      else if (commits > 4 && commits <= 6) lvl = 3;
-      else if (commits > 6) lvl = 4;
-      
-      cell.className = `contrib-cell lvl-${lvl}`;
-      
-      const daysAgo = totalCells - 1 - i;
-      const date = new Date();
-      date.setDate(date.getDate() - daysAgo);
-      const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-      
-      cell.title = commits > 0 
-        ? `${commits} commits on ${dateStr}` 
-        : `No commits on ${dateStr}`;
-      
-      grid.appendChild(cell);
     }
     
     container.appendChild(grid);
     
     const totalEl = document.getElementById('github-contrib-total');
     if (totalEl) {
-      totalEl.textContent = `Activity: ${totalCommits} Commits`;
+      animateCounter(totalEl, 0, totalCommits, 1200, (val) => `Activity: ${val} Commits`);
     }
   }
 
@@ -1590,6 +1667,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.project-card');
 
     cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        playCardHoverSound();
+      });
+
       card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
