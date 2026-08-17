@@ -157,6 +157,59 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (e) {}
   }
 
+  // Synthesized cyber glitch sound for avatar switching
+  function playGlitchSound() {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const bufferSize = Math.floor(audioCtx.sampleRate * 0.12);
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const output = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = (Math.random() * 2 - 1) * Math.sin(i * 0.08);
+      }
+      const whiteNoise = audioCtx.createBufferSource();
+      whiteNoise.buffer = buffer;
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1200, audioCtx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(3600, audioCtx.currentTime + 0.12);
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.12);
+      whiteNoise.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      whiteNoise.start();
+    } catch (e) {}
+  }
+
+  // Synthesized celestial aura resonance surge
+  function playAuraSurge() {
+    if (soundMuted) return;
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc1 = audioCtx.createOscillator();
+      const osc2 = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc1.type = 'sine';
+      osc2.type = 'triangle';
+      osc1.frequency.setValueAtTime(216, audioCtx.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(432, audioCtx.currentTime + 0.3);
+      osc2.frequency.setValueAtTime(324, audioCtx.currentTime);
+      osc2.frequency.exponentialRampToValueAtTime(648, audioCtx.currentTime + 0.3);
+      gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+      osc1.connect(gainNode);
+      osc2.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc1.start();
+      osc2.start();
+      osc1.stop(audioCtx.currentTime + 0.4);
+      osc2.stop(audioCtx.currentTime + 0.4);
+    } catch (e) {}
+  }
+
   // Synthesized pentatonic melodic note for contribution cell hover
   function playCellNote(lvl = 0) {
     if (soundMuted) return;
@@ -1495,12 +1548,67 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initTerminalDots();
 
-  // 6. Draw Native GitHub Contributions Glow Grid with Staggered Waves & Harmonic Chimes
-  function drawGithubContributions() {
+  // 5A. Dual Profile Avatar Switcher with Cybernetic Glitch & Radiant Aura Spread FX
+  function initAvatarSwitcher() {
+    const avatarSwitchBtn = document.getElementById('profile-avatar-switch');
+    const imgMain = document.getElementById('avatar-img-main');
+    const imgAlt = document.getElementById('avatar-img-alt');
+    const auraEl = document.getElementById('profile-avatar-aura');
+    const avatarFrame = document.querySelector('.profile-avatar-frame');
+
+    if (!avatarSwitchBtn || !imgMain || !imgAlt || !auraEl || !avatarFrame) return;
+
+    let isEmblemActive = false;
+
+    avatarSwitchBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      playGlitchSound();
+      avatarFrame.classList.add('avatar-glitching');
+
+      setTimeout(() => {
+        isEmblemActive = !isEmblemActive;
+
+        if (isEmblemActive) {
+          imgMain.style.display = 'none';
+          imgAlt.style.display = 'block';
+          auraEl.classList.add('aura-active');
+          avatarFrame.classList.add('aura-frame-active');
+          playAuraSurge();
+
+          // Create radiant expanding shockwave ripple around avatar frame
+          const shockwave = document.createElement('div');
+          shockwave.className = 'glitch-shockwave';
+          if (avatarFrame.parentElement) {
+            avatarFrame.parentElement.appendChild(shockwave);
+            setTimeout(() => shockwave.remove(), 750);
+          }
+        } else {
+          imgAlt.style.display = 'none';
+          imgMain.style.display = 'block';
+          auraEl.classList.remove('aura-active');
+          avatarFrame.classList.remove('aura-frame-active');
+          playHoverTick();
+        }
+      }, 180);
+
+      setTimeout(() => {
+        avatarFrame.classList.remove('avatar-glitching');
+      }, 450);
+    });
+  }
+
+  // 6. Draw Real Native GitHub Contributions Glow Grid with Laser Scan Opening Animation & Harmonic Chimes
+  async function drawGithubContributions() {
     const container = document.getElementById('github-grid-container');
     if (!container) return;
     
     container.innerHTML = '';
+
+    // Laser Scanner Opening Overlay
+    const scanLine = document.createElement('div');
+    scanLine.className = 'chart-scan-line';
+    container.appendChild(scanLine);
+    setTimeout(() => { scanLine.remove(); }, 1800);
     
     const grid = document.createElement('div');
     grid.className = 'github-grid-matrix';
@@ -1509,40 +1617,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const ROWS = 7;
     const totalCells = COLS * ROWS;
     let totalCommits = 0;
-    
-    // Deterministic pseudo-random generation for realistic activity patterns
-    const seed = 42;
-    function seededRand(n) {
-      return ((Math.sin(n * seed + 1) * 43758.5453123) % 1 + 1) % 1;
+    let contributionsData = [];
+
+    // Attempt to fetch real live contribution data for GovindTripathi22
+    try {
+      const res = await fetch('https://github-contributions-api.jogruber.de/v4/GovindTripathi22?y=last');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.contributions && json.contributions.length > 0) {
+          contributionsData = json.contributions;
+          if (json.total && json.total.lastYear) {
+            totalCommits = json.total.lastYear;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Using fallback data for contributions:", e);
     }
-    
+
+    // Take the most recent 168 days (24 weeks * 7 days)
+    const recentContributions = contributionsData.length >= totalCells 
+      ? contributionsData.slice(-totalCells) 
+      : [];
+
+    let computedTotal = 0;
+
     for (let c = 0; c < COLS; c++) {
       for (let r = 0; r < ROWS; r++) {
         const i = c * ROWS + r;
         const cell = document.createElement('div');
-        const rand = seededRand(i);
         
         let commits = 0;
-        if (rand > 0.72) commits = Math.floor(seededRand(i + 50) * 3) + 1;
-        if (rand > 0.88) commits = Math.floor(seededRand(i + 150) * 5) + 3;
-        if (rand > 0.96) commits = Math.floor(seededRand(i + 300) * 6) + 7;
-        
-        totalCommits += commits;
-        
         let lvl = 0;
-        if (commits >= 1 && commits <= 2) lvl = 1;
-        else if (commits >= 3 && commits <= 5) lvl = 2;
-        else if (commits >= 6 && commits <= 8) lvl = 3;
-        else if (commits >= 9) lvl = 4;
+        let dateStr = '';
+
+        if (recentContributions[i]) {
+          const item = recentContributions[i];
+          commits = item.count || 0;
+          lvl = item.level !== undefined ? item.level : (commits > 6 ? 4 : commits > 4 ? 3 : commits > 2 ? 2 : commits > 0 ? 1 : 0);
+          computedTotal += commits;
+          const d = new Date(item.date);
+          dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        } else {
+          // Fallback seeded values
+          const rand = ((Math.sin(i * 42 + 1) * 43758.5453123) % 1 + 1) % 1;
+          if (rand > 0.72) commits = Math.floor(rand * 3) + 1;
+          if (rand > 0.88) commits = Math.floor(rand * 5) + 3;
+          if (rand > 0.96) commits = Math.floor(rand * 6) + 7;
+          computedTotal += commits;
+          if (commits >= 1 && commits <= 2) lvl = 1;
+          else if (commits >= 3 && commits <= 5) lvl = 2;
+          else if (commits >= 6 && commits <= 8) lvl = 3;
+          else if (commits >= 9) lvl = 4;
+          const daysAgo = totalCells - 1 - i;
+          const d = new Date();
+          d.setDate(d.getDate() - daysAgo);
+          dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        }
         
         cell.className = `contrib-cell lvl-${lvl} clickable-element`;
-        // Staggered wave animation delay from top-left to bottom-right
         cell.style.animationDelay = `${(c * 22 + r * 16)}ms`;
-        
-        const daysAgo = totalCells - 1 - i;
-        const date = new Date();
-        date.setDate(date.getDate() - daysAgo);
-        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
         
         cell.title = commits > 0 
           ? `${commits} commit${commits > 1 ? 's' : ''} on ${dateStr}` 
@@ -1563,9 +1697,10 @@ document.addEventListener('DOMContentLoaded', () => {
     
     container.appendChild(grid);
     
+    const displayTotal = totalCommits > 0 ? totalCommits : computedTotal;
     const totalEl = document.getElementById('github-contrib-total');
     if (totalEl) {
-      animateCounter(totalEl, 0, totalCommits, 1200, (val) => `Activity: ${val} Commits`);
+      animateCounter(totalEl, 0, displayTotal, 1400, (val) => `Activity: ${val} Commits`);
     }
   }
 
@@ -1693,6 +1828,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Run on start
   initAvatarHUD();
+  initAvatarSwitcher();
   drawGithubContributions();
   initVisitorCounter();
   fetchGithubStats();
