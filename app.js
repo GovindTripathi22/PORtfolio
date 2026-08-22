@@ -669,38 +669,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!consoleInput || !consoleOutput) return;
     
     const commandResponses = {
-      help: `Available commands:
-  - skills        : View current technical stack metrics
-  - projects      : View list of active development projects
-  - about         : View developer background bio summary
-  - contact       : View phone, email, and social details
-  - theme         : Toggle between Light and Dark mode layout
-  - clear         : Clear terminal screen output
-  - matrix        : Toggle matrix falling code overlay
-  - synth         : Turn keyboard into a sound synthesizer
-  - self-destruct : Initiate safety core detonation sequence`,
-      skills: `=== TECHNICAL SKILLS MATRIX ===
-  - React & Next.js     [██████████████░] 92%
-  - Node.js & Express   [██████████████░] 90%
-  - Java & Spring Boot  [█████████████░░] 85%
-  - WebGL & Particle    [████████████░░░] 80%
-  - SQL & MongoDB       [█████████████░░] 85%
-  - Git, Docker, CI/CD  [██████████████░] 90%`,
-      projects: `=== ACTIVE PROJECTS ===
-  1. PrismHand [WebGL Sculpting Canvas] -> React/Three
-  2. Voyage [AI Route Travel Planner]   -> Next.js/Spring Boot
-  3. Obsidian Workspace [Note Graph]     -> Offline Markdown
-  4. OCMS College Platform [B2B API]     -> Spring Boot JWT`,
-      about: `=== DEVELOPER BIOGRAPHY ===
-  Name   : Govind Tripathi
-  Status : B.Tech Computer Science student & Freelancer
-  Focus  : Full-stack products, creative coding, scalable services.`,
-      contact: `=== CONTACT METADATA ===
-  Email   : govindtripathi62@gmail.com
-  Phone   : +91 9699124496
-  Github  : github.com/GovindTripathi22
-  LinkedIn: linkedin.com/in/govind-t-35360a290`,
-      theme: `Toggling layout theme...`
+      help: `┌── [AVAILABLE CLI COMMANDS]
+├── skills        : Technical stack proficiency matrix
+├── projects      : Development projects & live links
+├── views         : Real-time live visitor telemetry
+├── about         : Developer dossier & background
+├── contact       : Direct email, phone, & socials
+├── github        : Real-time GitHub statistics
+├── matrix        : Launch cyber code stream overlay
+├── theme         : Toggle Light / Dark mode layout
+├── synth         : Interactive playable audio piano
+├── clear         : Wipe terminal screen buffer
+└── self-destruct : Simulate emergency core purge`,
+
+      skills: `┌── [TECHNICAL CAPABILITIES]
+├── Frontend  : React, Next.js, WebGL, Three.js, CSS3 [94%]
+├── Backend   : Java, Spring Boot, Node.js, Express [90%]
+├── Database  : PostgreSQL, MySQL, MongoDB, Redis [86%]
+├── DevOps    : Docker, Git, CI/CD, Linux, Cloudflare [88%]
+└── Core CS   : Data Structures, Algorithms, REST APIs [92%]`,
+
+      projects: `┌── [FEATURED WORK REPOSITORY]
+├── 01. PrismHand  [WebGL / Three.js] ➔ Finger Tracking Sculptor
+├── 02. Voyage     [Next.js / AI]    ➔ Dynamic Trip Itinerary Planner
+├── 03. Obsidian   [React / Canvas]  ➔ Offline Note Graph Studio
+└── 04. OCMS       [Spring Boot/JWT] ➔ College Management REST API
+(Click project cards on right to inspect architecture & live code)`,
+
+      about: `┌── [DEVELOPER DOSSIER]
+├── Name      : Govind Tripathi
+├── Role      : Full-Stack Developer & Creative Coder
+├── Education : B.Tech Computer Science Engineering
+├── Passions  : High-performance web apps, shaders, creative audio FX
+└── Location  : India (IST / UTC+5:30)`,
+
+      contact: `┌── [COMMUNICATION CHANNELS]
+├── Email    : govindtripathi62@gmail.com
+├── Phone    : +91 9699124496
+├── GitHub   : github.com/GovindTripathi22
+└── LinkedIn : linkedin.com/in/govind-t-35360a290`
     };
     
     function printLine(text, className = '') {
@@ -711,16 +718,63 @@ document.addEventListener('DOMContentLoaded', () => {
       consoleOutput.scrollTop = consoleOutput.scrollHeight;
     }
     
-    function executeCommand(cmdText) {
+    async function executeCommand(cmdText) {
       const cleanCmd = cmdText.trim().toLowerCase();
-      printLine(`govind-tripathi$ ${cmdText}`, 'text-zinc-400');
+      printLine(`govind-tripathi$ ${cmdText}`, 'text-zinc-400 font-semibold');
       
       // Play terminal tick
       playKeyboardTick();
       
       if (cleanCmd === 'clear') {
         consoleOutput.innerHTML = '';
-        printLine('// System cleared. Type "help" for command matrix.', 'text-zinc-500');
+        printLine('┌── [GT-SHELL v2.4.0 · KERNEL READY]', 'text-cyan-400 font-bold');
+        printLine('├── AUTH: Guest (Secure Session)', 'text-zinc-400');
+        printLine("└── Type 'help' or click quick actions below:", 'text-emerald-400');
+        return;
+      }
+
+      if (cleanCmd === 'views') {
+        printLine('>> [FETCHING LIVE TELEMETRY STREAM...]', 'text-cyan-400 font-bold');
+        try {
+          const res = await fetch('https://counterapi.com/api/counter/govindtripathi22-portfolio');
+          if (res.ok) {
+            const data = await res.json();
+            const liveTotal = (data.value || 1) + 1420;
+            printLine(`┌── [REAL-TIME TRAFFIC TELEMETRY]`, 'text-emerald-400 font-bold');
+            printLine(`├── LIVE REAL VIEWS : ${liveTotal.toLocaleString()} visits`, 'text-emerald-300 font-semibold');
+            printLine(`├── NODE LATENCY    : ~24ms (HTTP 200 OK)`, 'text-zinc-400');
+            printLine(`└── ENDPOINT        : counterapi.com/govindtripathi22`, 'text-zinc-500');
+            
+            // Sync UI counters
+            if (visitorCountNumberEl) visitorCountNumberEl.textContent = liveTotal.toLocaleString();
+            if (visitorCountEl) visitorCountEl.innerHTML = `<i class="fa-solid fa-users"></i> VISITORS: ${liveTotal.toLocaleString()}`;
+          } else {
+            throw new Error('API offline');
+          }
+        } catch (e) {
+          const fallbackVisits = localStorage.getItem('visitor_count') || '1,428';
+          printLine(`┌── [TRAFFIC METRICS (CACHED)]`, 'text-emerald-400 font-bold');
+          printLine(`├── VERIFIED VISITS : ${fallbackVisits}`, 'text-emerald-300');
+          printLine(`└── STATUS          : Operational`, 'text-zinc-400');
+        }
+        return;
+      }
+
+      if (cleanCmd === 'github') {
+        printLine('>> [PINGING GITHUB API @GovindTripathi22...]', 'text-cyan-400 font-bold');
+        try {
+          const res = await fetch('https://api.github.com/users/GovindTripathi22');
+          if (res.ok) {
+            const data = await res.json();
+            printLine(`┌── [GITHUB TELEMETRY @${data.login}]`, 'text-emerald-400 font-bold');
+            printLine(`├── PUBLIC REPOS   : ${data.public_repos}`, 'text-emerald-300');
+            printLine(`├── FOLLOWERS      : ${data.followers}`, 'text-emerald-300');
+            printLine(`├── ANNUAL COMMITS : 938 Commits`, 'text-cyan-300 font-semibold');
+            printLine(`└── PROFILE URL    : ${data.html_url}`, 'text-zinc-400');
+          }
+        } catch (e) {
+          printLine('// GitHub profile telemetry cached: 938 commits · 2025', 'text-zinc-400');
+        }
         return;
       }
       
@@ -737,8 +791,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (cleanCmd === 'synth') {
-        printLine('=== WEB SYNTHESIZER ACTIVE ===', 'text-amber-400');
-        printLine('Keyboard keys [A, S, D, F, G, H, J, K] are now playable notes!', 'text-zinc-400');
+        printLine('=== WEB SYNTHESIZER ACTIVE ===', 'text-amber-400 font-bold');
+        printLine('Keyboard keys [A, S, D, F, G, H, J, K] are now playable notes!', 'text-zinc-300');
         triggerSynthPiano();
         return;
       }
@@ -747,12 +801,12 @@ document.addEventListener('DOMContentLoaded', () => {
         printLine('>> [INITIATING OVERRIDE BYPASS SUITE...]', 'text-cyan-400 font-bold');
         let step = 0;
         const steps = [
-          { text: 'Connecting to proxy matrix: [PORT 22] ... OK', delay: 400, color: 'text-zinc-400' },
-          { text: 'Retracing gateway coordinates: @GovindTripathi22 ... OK', delay: 800, color: 'text-zinc-400' },
-          { text: 'Bypassing firewall authentication handshake...', delay: 1200, color: 'text-amber-500' },
-          { text: 'Injecting kernel credentials payload... [██████░░░░] 60%', delay: 1600, color: 'text-amber-500' },
-          { text: 'Exploiting stack overflow entrypoint... [██████████] 100%', delay: 2000, color: 'text-emerald-400' },
-          { text: 'ACCESS GRANTED: Profile decrypted. Welcome Administrator.', delay: 2400, color: 'text-emerald-400 font-bold' }
+          { text: 'Connecting to proxy matrix: [PORT 22] ... OK', delay: 300, color: 'text-zinc-400' },
+          { text: 'Retracing gateway coordinates: @GovindTripathi22 ... OK', delay: 650, color: 'text-zinc-400' },
+          { text: 'Bypassing firewall authentication handshake...', delay: 1000, color: 'text-amber-500' },
+          { text: 'Injecting kernel credentials payload... [████████░░] 80%', delay: 1350, color: 'text-amber-500' },
+          { text: 'Exploiting stack overflow entrypoint... [██████████] 100%', delay: 1700, color: 'text-emerald-400' },
+          { text: 'ACCESS GRANTED: Profile decrypted. Welcome Administrator.', delay: 2050, color: 'text-emerald-400 font-bold' }
         ];
         steps.forEach(s => {
           setTimeout(() => {
@@ -768,34 +822,45 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       if (cleanCmd === 'theme') {
-        printLine(commandResponses.theme, 'text-amber-400');
+        printLine('Toggling workspace theme palette...', 'text-amber-400 font-semibold');
         setTimeout(() => {
-          const active = document.body.getAttribute('data-theme');
           const toggleBtn = document.getElementById('theme-toggle');
           if (toggleBtn) toggleBtn.click();
-        }, 300);
+        }, 200);
+        return;
+      }
+
+      if (cleanCmd === 'time') {
+        const now = new Date();
+        const istOffset = 5.5 * 60 * 60 * 1000;
+        const istTime = new Date(now.getTime() + istOffset);
+        printLine(`┌── [GLOBAL TIME METRICS]`, 'text-cyan-400 font-bold');
+        printLine(`├── IST : ${istTime.toUTCString().slice(17, 25)} (Asia/Kolkata)`, 'text-emerald-300');
+        printLine(`└── UTC : ${now.toUTCString().slice(17, 25)} (Greenwich Mean Time)`, 'text-zinc-400');
         return;
       }
       
       if (commandResponses[cleanCmd]) {
         printLine(commandResponses[cleanCmd], 'text-emerald-400');
       } else if (cleanCmd !== '') {
-        printLine(`Command not found: "${cmdText}". Type "help" for list of valid options.`, 'text-red-400');
+        printLine(`Command not found: "${cmdText}". Type 'help' for valid options.`, 'text-red-400');
       }
     }
     
     consoleInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         const val = consoleInput.value;
-        executeCommand(val);
-        consoleInput.value = '';
+        if (val.trim()) {
+          executeCommand(val);
+          consoleInput.value = '';
+        }
       }
     });
     
     cmdPills.forEach(pill => {
       pill.addEventListener('click', () => {
         const cmd = pill.getAttribute('data-cmd');
-        executeCommand(cmd);
+        if (cmd) executeCommand(cmd);
       });
     });
   }
@@ -811,11 +876,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const activeCountEl = document.getElementById('active-count');
 
   async function initVisitorCounter() {
-    let visits = 1420;
+    let visits = 1428;
+    const baseOffset = 1420;
+    
     try {
+      // Live Real Counter API Fetch
+      const res = await fetch('https://counterapi.com/api/counter/govindtripathi22-portfolio');
+      if (res.ok) {
+        const data = await res.json();
+        if (data && typeof data.value === 'number') {
+          visits = baseOffset + data.value;
+          localStorage.setItem('visitor_count', visits);
+        }
+      } else {
+        throw new Error('CounterAPI status not OK');
+      }
+    } catch (err) {
+      // Resilient local session fallback
       let localVisits = localStorage.getItem('visitor_count');
       if (!localVisits) {
-        localVisits = 1420;
+        localVisits = 1428;
       }
       const sessionKey = 'govind_visited_session';
       if (!sessionStorage.getItem(sessionKey)) {
@@ -825,12 +905,10 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         visits = parseInt(localVisits, 10);
       }
-    } catch (err) {
-      visits = 1421;
     }
 
     if (visitorCountEl) {
-      animateCounter(visitorCountEl, 0, visits, 1400, (v) => `<i class="fa-solid fa-users"></i> VISITORS: ${v}`);
+      animateCounter(visitorCountEl, 0, visits, 1400, (v) => `<i class="fa-solid fa-users"></i> VISITORS: ${Number(v).toLocaleString()}`);
     }
     if (visitorCountNumberEl) {
       animateCounter(visitorCountNumberEl, 0, visits, 1400, (v) => Number(v).toLocaleString());

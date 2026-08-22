@@ -138,29 +138,37 @@
             </div>
 
             <!-- Interactive Terminal Console Module -->
-            <div class="module-box" style="padding:0; overflow:hidden;">
-              <div class="console-box font-mono clickable-element" style="margin-top:0; border:none; height:210px; box-shadow:none;">
+            <div class="module-box terminal-module-wrap" style="padding:0; overflow:hidden;">
+              <div class="console-box font-mono clickable-element" style="margin-top:0; border:none; height:225px; box-shadow:none;">
                 <div class="console-header">
                   <div class="console-dots">
-                    <span class="console-dot-red"></span>
-                    <span class="console-dot-yellow"></span>
-                    <span class="console-dot-green"></span>
+                    <span class="console-dot-red" title="Clear console"></span>
+                    <span class="console-dot-yellow" title="Cycle theme color"></span>
+                    <span class="console-dot-green" title="Matrix Mode"></span>
                   </div>
-                  <span class="console-title text-xs">govind@tripathi:~</span>
+                  <div class="console-header-center">
+                    <span class="console-status-dot"></span>
+                    <span class="console-title text-xs">govind@tripathi:~ (zsh)</span>
+                  </div>
+                  <span class="console-header-badge font-mono">ONLINE</span>
                 </div>
                 <div class="console-body" id="console-output">
-                  <div class="console-line text-zinc-500">// System initialized. Type 'help' or click quick commands below:</div>
-                  <div class="console-line text-emerald-400">govind-tripathi login: success. Welcome, guest user.</div>
+                  <div class="console-line text-cyan-400 font-bold">┌── [GT-SHELL v2.4.0 · KERNEL READY]</div>
+                  <div class="console-line text-zinc-400">├── AUTH: Guest (Secure Session)</div>
+                  <div class="console-line text-emerald-400">└── Type 'help' or click quick actions below:</div>
                 </div>
                 <div class="console-quick-cmds">
-                  <button class="cmd-pill text-xs clickable-element" data-cmd="help">help</button>
-                  <button class="cmd-pill text-xs clickable-element" data-cmd="skills">skills</button>
-                  <button class="cmd-pill text-xs clickable-element" data-cmd="projects">projects</button>
-                  <button class="cmd-pill text-xs clickable-element" data-cmd="clear">clear</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="help"><i class="fa-solid fa-terminal"></i> help</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="skills"><i class="fa-solid fa-code"></i> skills</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="projects"><i class="fa-solid fa-folder-open"></i> projects</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="views"><i class="fa-regular fa-eye"></i> views</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="about"><i class="fa-regular fa-user"></i> about</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="contact"><i class="fa-regular fa-paper-plane"></i> contact</button>
+                  <button class="cmd-pill text-xs clickable-element" data-cmd="clear"><i class="fa-solid fa-eraser"></i> clear</button>
                 </div>
                 <div class="console-input-row">
                   <span class="console-prompt text-emerald-400">govind-tripathi$</span>
-                  <input type="text" id="console-input" class="console-input font-mono" placeholder="type here..." autocomplete="off">
+                  <input type="text" id="console-input" class="console-input font-mono" placeholder="type a command (e.g. 'help', 'skills', 'views')..." autocomplete="off" spellcheck="false">
                 </div>
               </div>
             </div>
