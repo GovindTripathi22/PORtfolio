@@ -86,20 +86,6 @@ body {
   cursor: default; /* Default browser cursor */
 }
 
-/* Custom cursor enabled overrides default cursors */
-body.custom-cursor-enabled {
-  cursor: none !important;
-}
-
-body.custom-cursor-enabled a,
-body.custom-cursor-enabled button,
-body.custom-cursor-enabled input,
-body.custom-cursor-enabled textarea,
-body.custom-cursor-enabled .clickable-element,
-body.custom-cursor-enabled .project-card {
-  cursor: none !important;
-}
-
 /* Helper Utilities */
 .block { display: block; }
 .mt-3 { margin-top: 0.75rem; }
@@ -123,65 +109,18 @@ body.custom-cursor-enabled .project-card {
   opacity: 0.035;
 }
 
-/* --- Fullscreen WebGL Shader Background --- */
+/* --- Fullscreen Canvas Background (Anti-Gravity Prism) --- */
 #gl-canvas {
   position: fixed;
   inset: 0;
-  z-index: -3;
+  z-index: -1;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.25;
   transition: opacity 0.3s ease;
 }
 
 [data-theme="light"] #gl-canvas {
-  opacity: 0.08;
-}
-
-/* --- Custom Cursors --- */
-.cursor-dot {
-  width: var(--cursor-size);
-  height: var(--cursor-size);
-  background-color: var(--accent-cyan);
-  border-radius: 50%;
-  position: fixed;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 999999;
-  opacity: 0;
-  transition: opacity 0.3s ease, transform 0.15s, background-color 0.15s;
-}
-
-.cursor-ring {
-  width: var(--ring-size);
-  height: var(--ring-size);
-  border: 1px solid var(--accent-orchid);
-  border-radius: 50%;
-  position: fixed;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  z-index: 999998;
-  opacity: 0;
-  transition: opacity 0.3s ease, 
-              width 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
-              height 0.25s cubic-bezier(0.25, 0.8, 0.25, 1),
-              border-color 0.25s,
-              background-color 0.25s,
-              border-radius 0.25s;
-}
-
-/* Cursor dynamic hover properties */
-body.cursor-hovering-clickable .cursor-ring {
-  width: 38px;
-  height: 38px;
-  border-color: var(--accent-cyan);
-  background-color: rgba(var(--accent-cyan-rgb), 0.05);
-}
-
-body.cursor-hovering-input .cursor-ring {
-  width: 12px;
-  height: 22px;
-  border-radius: 3px;
-  border-color: var(--accent-cyan);
+  opacity: 0.12;
 }
 
 /* --- Blueprint Rail Structures --- */
@@ -339,13 +278,17 @@ body.cursor-hovering-input .cursor-ring {
 }
 
 /* --- Header Bio Card Elements --- */
+.module-box.header-bio-module {
+  overflow: visible !important;
+}
+
 .header-flex {
   display: flex;
   align-items: center;
   position: relative;
 }
 
-/* --- Avatar Switcher & Radiant Aura Spread FX --- */
+/* --- Avatar Switcher & Matching Aura FX --- */
 .profile-avatar-frame-wrap {
   position: relative;
   display: inline-flex;
@@ -360,9 +303,9 @@ body.cursor-hovering-input .cursor-ring {
   pointer-events: none;
   opacity: 0;
   z-index: 0;
-  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  background: radial-gradient(circle at center, rgba(239, 68, 68, 0.45) 0%, rgba(245, 158, 11, 0.25) 45%, transparent 75%);
-  filter: blur(8px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), background 0.6s ease;
+  background: radial-gradient(circle at center, rgba(220, 38, 38, 0.4) 0%, rgba(217, 119, 6, 0.2) 45%, transparent 75%);
+  filter: blur(10px);
 }
 
 .profile-avatar-aura.aura-active {
@@ -373,14 +316,14 @@ body.cursor-hovering-input .cursor-ring {
 @keyframes auraPulse {
   0% {
     transform: scale(0.96);
-    filter: blur(6px);
     opacity: 0.75;
+    filter: blur(8px);
   }
   100% {
-    transform: scale(1.18);
-    filter: blur(14px);
+    transform: scale(1.15);
     opacity: 1;
-    box-shadow: 0 0 40px rgba(239, 68, 68, 0.5), 0 0 70px rgba(245, 158, 11, 0.3);
+    filter: blur(14px);
+    box-shadow: 0 0 35px rgba(220, 38, 38, 0.45), 0 0 60px rgba(217, 119, 6, 0.25);
   }
 }
 
@@ -408,9 +351,10 @@ body.cursor-hovering-input .cursor-ring {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 16px rgba(var(--accent-cyan-rgb), 0.3);
 }
 
+/* When Lion Emblem is active, border & aura match the emblem's rich crimson & gold colors */
 .profile-avatar-frame.aura-frame-active {
-  border-color: #ef4444;
-  box-shadow: 0 0 20px rgba(239, 68, 68, 0.6), 0 0 35px rgba(245, 158, 11, 0.3);
+  border-color: #dc2626 !important;
+  box-shadow: 0 0 20px rgba(220, 38, 38, 0.55), 0 0 35px rgba(217, 119, 6, 0.25) !important;
 }
 
 .avatar-img {
@@ -418,97 +362,27 @@ body.cursor-hovering-input .cursor-ring {
   height: 100%;
   object-fit: cover;
   border-radius: 7px;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  transition: opacity 0.25s ease;
   user-select: none;
 }
 
-.avatar-switch-badge {
-  position: absolute;
-  bottom: -2px;
-  right: -2px;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--card);
-  border: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.65rem;
-  color: var(--accent-cyan);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  z-index: 5;
-  transition: all 0.2s ease;
+/* Smooth 3D Holographic Flip Animation when switching avatar */
+.avatar-morphing {
+  animation: avatarHoloFlip 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
 }
 
-.profile-avatar-frame:hover .avatar-switch-badge {
-  transform: rotate(180deg) scale(1.1);
-  border-color: var(--accent-cyan);
-  color: #fff;
-  background: var(--accent-cyan);
-}
-
-/* Glitch Animation Classes */
-.avatar-glitching {
-  animation: cyberGlitch 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) both !important;
-}
-
-@keyframes cyberGlitch {
+@keyframes avatarHoloFlip {
   0% {
-    transform: translate(0);
-    filter: none;
+    transform: perspective(600px) rotateY(0deg) scale(1);
+    filter: brightness(1);
   }
-  20% {
-    transform: translate(-3px, 2px) skewX(5deg);
-    filter: drop-shadow(3px 0 0 #ef4444) drop-shadow(-3px 0 0 #06b6d4);
-  }
-  40% {
-    transform: translate(3px, -2px) skewX(-5deg);
-    filter: drop-shadow(-3px 0 0 #f59e0b) drop-shadow(3px 0 0 #10b981);
-  }
-  60% {
-    transform: translate(-2px, -1px) scale(1.05);
-    filter: drop-shadow(2px 0 0 #ec4899) drop-shadow(-2px 0 0 #3b82f6);
-  }
-  80% {
-    transform: translate(2px, 1px) scale(0.98);
-    filter: drop-shadow(-2px 0 0 #ef4444);
+  50% {
+    transform: perspective(600px) rotateY(90deg) scale(0.92);
+    filter: brightness(1.25);
   }
   100% {
-    transform: translate(0) scale(1);
-    filter: none;
-  }
-}
-
-/* Radiant Shockwave Ripple when switching to emblem */
-.glitch-shockwave {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: 2px solid #ef4444;
-  pointer-events: none;
-  z-index: 1;
-  animation: shockwaveExpand 0.7s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
-}
-
-@keyframes shockwaveExpand {
-  0% {
-    width: 60px;
-    height: 60px;
-    opacity: 1;
-    border-color: #ef4444;
-    box-shadow: 0 0 20px #ef4444;
-  }
-  100% {
-    width: 220px;
-    height: 220px;
-    opacity: 0;
-    border-color: #f59e0b;
-    box-shadow: 0 0 50px rgba(245, 158, 11, 0);
+    transform: perspective(600px) rotateY(0deg) scale(1);
+    filter: brightness(1);
   }
 }
 
@@ -518,20 +392,28 @@ body.cursor-hovering-input .cursor-ring {
   min-width: 0;
 }
 
+/* Small Black and White Avatar Switch Button above name */
 .theme-icon-indicator {
-  margin-bottom: 0.25rem;
-  color: var(--text-secondary);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.3rem;
+  color: var(--foreground);
   cursor: pointer;
-  width: fit-content;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-.theme-icon-indicator svg {
-  transition: transform 0.3s ease;
-}
-
-.theme-icon-indicator:hover svg {
-  transform: rotate(180deg);
+.theme-icon-indicator:hover {
+  transform: rotate(180deg) scale(1.15);
+  border-color: var(--accent-cyan);
   color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(var(--accent-cyan-rgb), 0.4);
 }
 
 .profile-name {
@@ -573,24 +455,25 @@ body.cursor-hovering-input .cursor-ring {
   color: var(--foreground);
 }
 
-/* Floating GitHub Hover Profile Card */
+/* Fully Visible Floating GitHub Hover Profile Card */
 .github-hover-card {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   left: 0;
-  width: 260px;
+  width: 280px;
   background: var(--card);
-  border: 1px solid var(--border-hover);
-  border-radius: 10px;
-  padding: 0.85rem;
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4), 0 0 16px rgba(var(--accent-cyan-rgb), 0.2);
-  z-index: 999;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border);
+  z-index: 10000;
   opacity: 0;
   visibility: hidden;
-  transform: translateY(8px);
-  transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transform: translateY(6px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
 }
 
 .group\/github:hover .github-hover-card {
@@ -674,15 +557,16 @@ body.cursor-hovering-input .cursor-ring {
 .control-btn {
   background: var(--card);
   border: 1px solid var(--border);
-  color: var(--text-muted);
-  width: 30px;
-  height: 30px;
+  color: var(--foreground);
+  width: 32px;
+  height: 32px;
   border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
 }
 
@@ -690,6 +574,7 @@ body.cursor-hovering-input .cursor-ring {
   border-color: var(--accent-cyan);
   color: var(--accent-cyan);
   transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(var(--accent-cyan-rgb), 0.3);
 }
 
 /* Audio Equalizer Mini Bars */
@@ -724,8 +609,8 @@ body:not(.sound-muted) .eq-bar:nth-child(3) {
 
 /* Custom Animated Theme Toggle Switch */
 .theme-switch-wrap {
-  width: 48px;
-  height: 26px;
+  width: 52px;
+  height: 28px;
   background-color: var(--card);
   border: 1px solid var(--border);
   border-radius: 100px;
@@ -734,17 +619,18 @@ body:not(.sound-muted) .eq-bar:nth-child(3) {
   display: flex;
   align-items: center;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 .theme-switch-wrap:hover {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 8px rgba(var(--accent-cyan-rgb), 0.2);
+  box-shadow: 0 0 10px rgba(var(--accent-cyan-rgb), 0.35);
 }
 
 .theme-switch-knob {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background-color: var(--foreground);
   display: flex;
@@ -756,10 +642,11 @@ body:not(.sound-muted) .eq-bar:nth-child(3) {
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), 
               background-color 0.3s ease;
   overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
 .theme-switch-knob i {
-  font-size: 0.6rem;
+  font-size: 0.65rem;
   position: absolute;
   transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -778,7 +665,7 @@ body:not(.sound-muted) .eq-bar:nth-child(3) {
 
 /* State transition when data-theme light is active */
 [data-theme="light"] .theme-switch-knob {
-  transform: translateX(22px);
+  transform: translateX(24px);
   background-color: #050505;
 }
 
@@ -1010,39 +897,59 @@ body:not(.sound-muted) .eq-bar:nth-child(3) {
 .contrib-cell:hover {
   transform: scale(1.85);
   z-index: 20;
-  box-shadow: 0 0 14px var(--cell-glow, rgba(255, 102, 0, 0.9));
+  box-shadow: 0 0 14px var(--cell-glow, rgba(57, 211, 83, 0.9));
 }
 
-/* Activity Levels */
+/* Authentic Vibrant GitHub Green Activity Levels */
 .lvl-0 { 
-  background-color: rgba(255, 255, 255, 0.04); 
+  background-color: rgba(255, 255, 255, 0.05); 
 }
 [data-theme="light"] .lvl-0 { 
-  background-color: rgba(0, 0, 0, 0.06); 
+  background-color: #ebedf0; 
 }
 
 .lvl-1 { 
-  background-color: rgba(255, 102, 0, 0.25); 
-  --cell-glow: rgba(255, 102, 0, 0.5); 
+  background-color: #0e4429; 
+  --cell-glow: rgba(57, 211, 83, 0.45); 
+}
+[data-theme="light"] .lvl-1 { 
+  background-color: #9be9a8; 
+  --cell-glow: rgba(57, 211, 83, 0.45); 
 }
 
 .lvl-2 { 
-  background-color: rgba(255, 102, 0, 0.5); 
-  --cell-glow: rgba(255, 102, 0, 0.7); 
-  box-shadow: 0 0 4px rgba(255, 102, 0, 0.25); 
+  background-color: #006d32; 
+  --cell-glow: rgba(57, 211, 83, 0.65); 
+  box-shadow: 0 0 4px rgba(46, 160, 67, 0.35); 
+}
+[data-theme="light"] .lvl-2 { 
+  background-color: #40c463; 
+  --cell-glow: rgba(57, 211, 83, 0.65); 
+  box-shadow: 0 0 4px rgba(46, 160, 67, 0.35); 
 }
 
 .lvl-3 { 
-  background-color: rgba(255, 102, 0, 0.75); 
-  --cell-glow: rgba(255, 102, 0, 0.9); 
-  box-shadow: 0 0 6px rgba(255, 102, 0, 0.4); 
+  background-color: #26a641; 
+  --cell-glow: rgba(57, 211, 83, 0.85); 
+  box-shadow: 0 0 6px rgba(57, 211, 83, 0.5); 
+}
+[data-theme="light"] .lvl-3 { 
+  background-color: #30a14e; 
+  --cell-glow: rgba(57, 211, 83, 0.85); 
+  box-shadow: 0 0 6px rgba(57, 211, 83, 0.5); 
 }
 
 .lvl-4 { 
-  background-color: #ff6600; 
-  --cell-glow: #ff6600; 
-  box-shadow: 0 0 10px rgba(255, 102, 0, 0.8); 
-  animation: cellPulse 2.5s infinite ease-in-out; 
+  background-color: #39d353; 
+  --cell-glow: #39d353; 
+  box-shadow: 0 0 10px rgba(57, 211, 83, 0.85); 
+  animation: greenCellPulse 2.5s infinite ease-in-out; 
+}
+[data-theme="light"] .lvl-4 { 
+  background-color: #216e39; 
+  --cell-glow: #216e39; 
+  box-shadow: 0 0 10px rgba(33, 110, 57, 0.85); 
+  animation: greenCellPulse 2.5s infinite ease-in-out; 
 }
 
 @keyframes cellPopIn {
@@ -1059,13 +966,28 @@ body:not(.sound-muted) .eq-bar:nth-child(3) {
   }
 }
 
-@keyframes cellPulse {
+@keyframes greenCellPulse {
   0%, 100% { 
-    box-shadow: 0 0 6px rgba(255, 102, 0, 0.4); 
+    box-shadow: 0 0 5px rgba(57, 211, 83, 0.4); 
   }
   50% { 
-    box-shadow: 0 0 14px rgba(255, 102, 0, 0.9), 0 0 20px rgba(255, 102, 0, 0.4); 
+    box-shadow: 0 0 14px rgba(57, 211, 83, 0.95), 0 0 22px rgba(57, 211, 83, 0.4); 
   }
+}
+
+@keyframes skeletonPulse {
+  0% { opacity: 0.15; transform: scale(0.85); }
+  100% { opacity: 0.5; transform: scale(1); }
+}
+
+/* Background Canvas (Anti-Gravity Prism Sphere) */
+#gl-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: -1;
 }
 
 .github-chart-footer {

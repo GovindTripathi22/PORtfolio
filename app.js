@@ -298,77 +298,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   // ========================================================================
-  // 2. CUSTOM CURSOR PHYSICS & INTERACTION
+  // 2. HOVER SOUND INTERACTION (Normal browser cursor, no custom cursor)
   // ========================================================================
-  const cursorDot = document.getElementById('cursor-dot');
-  const cursorRing = document.getElementById('cursor-ring');
-
-  let mouseX = -100;
-  let mouseY = -100;
-  let ringX = -100;
-  let ringY = -100;
-  let cursorEnabled = false;
-
-  window.addEventListener('mousemove', (e) => {
-    // Enable custom cursor on the first mouse movement
-    if (!cursorEnabled) {
-      cursorEnabled = true;
-      document.body.classList.add('custom-cursor-enabled');
-      cursorDot.style.opacity = '1';
-      cursorRing.style.opacity = '1';
-    }
-    
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    cursorDot.style.left = `${mouseX}px`;
-    cursorDot.style.top = `${mouseY}px`;
-  });
-
-  // Lerp follow loop
-  function animateCursorRing() {
-    const lerp = 0.18;
-    ringX += (mouseX - ringX) * lerp;
-    ringY += (mouseY - ringY) * lerp;
-    cursorRing.style.left = `${ringX}px`;
-    cursorRing.style.top = `${ringY}px`;
-    requestAnimationFrame(animateCursorRing);
-  }
-  animateCursorRing();
-
-  // Cursor morphing behaviors
-  function attachCursorState(selector, bodyClass, customSoundFn) {
+  // Bind hover sound triggers with category specificity
+  function attachHoverSound(selector, customSoundFn) {
     const elms = document.querySelectorAll(selector);
     elms.forEach(el => {
       el.addEventListener('mouseenter', () => {
-        if (cursorEnabled) {
-          document.body.classList.add(bodyClass);
-          if (customSoundFn) {
-            customSoundFn();
-          } else {
-            playHoverTick();
-          }
+        if (customSoundFn) {
+          customSoundFn();
+        } else {
+          playHoverTick();
         }
-      });
-      el.addEventListener('mouseleave', () => {
-        document.body.classList.remove(bodyClass);
       });
     });
   }
 
-  // Bind hover sound triggers with category specificity
-  function initCursorStates() {
-    // 1. Projects play glitch sound on hover
-    attachCursorState('.project-card', 'cursor-hovering-clickable', playHoverTick);
-    // 2. Tech tags play high-pitched synth blips
-    attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
-    // 3. Certifications play bell chimes
-    attachCursorState('.cert-pill', 'cursor-hovering-clickable', playCertBell);
-    // 4. Github, social links, headers and buttons play keyboard ticks
-    attachCursorState('.clickable-element, a, button, .experience-trigger', 'cursor-hovering-clickable', playKeyboardTick);
-    // 5. Input text areas play inputs
-    attachCursorState('input, textarea', 'cursor-hovering-input');
+  function initHoverSounds() {
+    attachHoverSound('.project-card', playHoverTick);
+    attachHoverSound('.tech-tag', playTagBlip);
+    attachHoverSound('.cert-pill', playCertBell);
+    attachHoverSound('.clickable-element, a, button, .experience-trigger', playKeyboardTick);
   }
-  initCursorStates();
+  initHoverSounds();
 
   // Add click sounds
   document.addEventListener('click', (e) => {
@@ -465,42 +417,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   themeToggle.addEventListener('click', (e) => toggleTheme(e));
   if (themeVisualBtn) {
-    let shaderVisible = true;
     themeVisualBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      shaderVisible = !shaderVisible;
-      
-      // Play deep resonance sound
-      playResonanceSound();
-      
-      // Spin the Yin-Yang icon
-      const svg = themeVisualBtn.querySelector('svg');
-      if (svg) {
-        svg.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
-        svg.style.transform = shaderVisible ? 'rotate(0deg)' : 'rotate(360deg)';
-      }
-      
-      // Toggle WebGL canvas visibility
-      const canvas = document.getElementById('gl-canvas');
-      if (canvas) {
-        canvas.style.transition = 'opacity 0.5s ease';
-        canvas.style.opacity = shaderVisible ? (document.body.getAttribute('data-theme') === 'light' ? '0.08' : '0.18') : '0';
-      }
+      // Trigger avatar switch via the same mechanism
+      const avatarFrame = document.querySelector('.profile-avatar-frame');
+      if (avatarFrame) avatarFrame.click();
     });
   }
 
 
   // ========================================================================
-  // 5. INTERACTIVE CONSTELLATION CANVAS BACKGROUND
+  // 5. ANTI-GRAVITY PRISM SPHERE PARTICLE EFFECT
   // ========================================================================
-  function initConstellationBackground() {
+  function initPrismSphere() {
     const canvas = document.getElementById('gl-canvas');
     if (!canvas) return;
+    canvas.style.pointerEvents = 'none';
     const ctx = canvas.getContext('2d');
     
     let particles = [];
-    const particleCount = 80;
-    const connectionDistance = 100;
+    const particleCount = 140;
+    const repulsionRadius = 160;
+    const repulsionForce = 0.08;
+    const prismColors = [
+      'rgba(255, 50, 50, 0.55)',   // Red
+      'rgba(255, 165, 0, 0.55)',   // Orange
+      'rgba(255, 255, 0, 0.45)',   // Yellow
+      'rgba(50, 205, 50, 0.55)',   // Green
+      'rgba(0, 150, 255, 0.55)',   // Blue
+      'rgba(130, 0, 255, 0.5)',    // Indigo
+      'rgba(200, 50, 255, 0.5)',   // Violet
+    ];
     
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
@@ -524,33 +471,60 @@ document.addEventListener('DOMContentLoaded', () => {
       constructor() {
         this.x = Math.random() * width;
         this.y = Math.random() * height;
-        this.vx = (Math.random() - 0.5) * 0.4;
-        this.vy = (Math.random() - 0.5) * 0.4;
-        this.radius = Math.random() * 1.5 + 1;
+        this.baseVx = (Math.random() - 0.5) * 0.35;
+        this.baseVy = (Math.random() - 0.5) * 0.35;
+        this.vx = this.baseVx;
+        this.vy = this.baseVy;
+        this.radius = Math.random() * 1.8 + 0.8;
+        this.colorIndex = Math.floor(Math.random() * prismColors.length);
+        this.phase = Math.random() * Math.PI * 2;
+        this.phaseSpeed = 0.003 + Math.random() * 0.005;
       }
       update() {
+        this.phase += this.phaseSpeed;
+        
+        // Anti-gravity repulsion from cursor (hollows out a sphere)
+        if (mouse.x !== null && mouse.y !== null) {
+          const dx = this.x - mouse.x;
+          const dy = this.y - mouse.y;
+          const dist = Math.hypot(dx, dy);
+          
+          if (dist < repulsionRadius && dist > 0) {
+            // Push particles AWAY from cursor (anti-gravity)
+            const force = (1 - dist / repulsionRadius) * repulsionForce;
+            const angle = Math.atan2(dy, dx);
+            this.vx += Math.cos(angle) * force * 2.5;
+            this.vy += Math.sin(angle) * force * 2.5;
+          }
+        }
+        
+        // Dampen velocity back toward baseline drift
+        this.vx += (this.baseVx - this.vx) * 0.02;
+        this.vy += (this.baseVy - this.vy) * 0.02;
+        
         this.x += this.vx;
         this.y += this.vy;
         
-        if (this.x < 0 || this.x > width) this.vx *= -1;
-        if (this.y < 0 || this.y > height) this.vy *= -1;
-        
-        // Mouse interaction (gentle attraction)
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = mouse.x - this.x;
-          const dy = mouse.y - this.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 150) {
-            this.x += dx * 0.005;
-            this.y += dy * 0.005;
-          }
-        }
+        // Wrap around edges
+        if (this.x < -10) this.x = width + 10;
+        if (this.x > width + 10) this.x = -10;
+        if (this.y < -10) this.y = height + 10;
+        if (this.y > height + 10) this.y = -10;
       }
       draw() {
-        const isLight = document.body.getAttribute('data-theme') === 'light';
+        // Cycle through prism rainbow colors slowly
+        const ci = Math.floor((this.colorIndex + this.phase) % prismColors.length);
+        const brightness = 0.7 + Math.sin(this.phase) * 0.3;
+        
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = isLight ? 'rgba(255, 102, 0, 0.4)' : 'rgba(255, 102, 0, 0.65)';
+        ctx.arc(this.x, this.y, this.radius * brightness, 0, Math.PI * 2);
+        ctx.fillStyle = prismColors[ci];
+        ctx.fill();
+        
+        // Subtle halo glow
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius * 3 * brightness, 0, Math.PI * 2);
+        ctx.fillStyle = prismColors[ci].replace(/[\d.]+\)$/, (brightness * 0.1).toFixed(2) + ')');
         ctx.fill();
       }
     }
@@ -559,7 +533,7 @@ document.addEventListener('DOMContentLoaded', () => {
       particles.push(new Particle());
     }
     
-    function draw() {
+    function drawFrame() {
       ctx.clearRect(0, 0, width, height);
       const isLight = document.body.getAttribute('data-theme') === 'light';
       
@@ -569,7 +543,8 @@ document.addEventListener('DOMContentLoaded', () => {
         p.draw();
       });
       
-      // Draw connection lines
+      // Draw prismatic connection lines between nearby particles
+      const connDist = 90;
       ctx.lineWidth = 0.5;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -577,36 +552,38 @@ document.addEventListener('DOMContentLoaded', () => {
           const dy = particles[i].y - particles[j].y;
           const dist = Math.hypot(dx, dy);
           
-          if (dist < connectionDistance) {
-            const alpha = (1 - dist / connectionDistance) * (isLight ? 0.07 : 0.12);
-            ctx.strokeStyle = `rgba(255, 102, 0, ${alpha})`;
+          if (dist < connDist) {
+            const alpha = (1 - dist / connDist) * (isLight ? 0.06 : 0.1);
+            const ci = Math.floor((particles[i].colorIndex + particles[i].phase) % prismColors.length);
+            ctx.strokeStyle = prismColors[ci].replace(/[\d.]+\)$/, alpha.toFixed(3) + ')');
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.stroke();
           }
         }
-        
-        // Draw connection to mouse
-        if (mouse.x !== null && mouse.y !== null) {
-          const dx = particles[i].x - mouse.x;
-          const dy = particles[i].y - mouse.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist < 150) {
-            const alpha = (1 - dist / 150) * (isLight ? 0.1 : 0.18);
-            ctx.strokeStyle = `rgba(255, 102, 0, ${alpha})`;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(mouse.x, mouse.y);
-            ctx.stroke();
-          }
-        }
       }
-      requestAnimationFrame(draw);
+      
+      // Draw hollow repulsion sphere outline near cursor
+      if (mouse.x !== null && mouse.y !== null) {
+        const gradient = ctx.createRadialGradient(
+          mouse.x, mouse.y, repulsionRadius * 0.6,
+          mouse.x, mouse.y, repulsionRadius
+        );
+        gradient.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        gradient.addColorStop(0.7, isLight ? 'rgba(100, 100, 200, 0.02)' : 'rgba(200, 200, 255, 0.02)');
+        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        ctx.beginPath();
+        ctx.arc(mouse.x, mouse.y, repulsionRadius, 0, Math.PI * 2);
+        ctx.fillStyle = gradient;
+        ctx.fill();
+      }
+      
+      requestAnimationFrame(drawFrame);
     }
-    draw();
+    drawFrame();
   }
-  initConstellationBackground();
+  initPrismSphere();
 
   // ========================================================================
   // 5B. SCI-FI DECRYPT SCRAPING EFFECTS
@@ -973,7 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
         span.textContent = t;
         techContainer.appendChild(span);
       });
-      attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
+      attachHoverSound('.tech-tag', playTagBlip);
     }
   }
 
@@ -1027,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', () => {
               span.textContent = t;
               techContainer.appendChild(span);
             });
-            attachCursorState('.tech-tag', 'cursor-hovering-clickable', playTagBlip);
+            attachHoverSound('.tech-tag', playTagBlip);
           }
           
           playSlideSound();
@@ -1548,7 +1525,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   initTerminalDots();
 
-  // 5A. Dual Profile Avatar Switcher with Cybernetic Glitch & Radiant Aura Spread FX
+  // 5A. Dual Profile Avatar Switcher with Smooth 3D Holographic Flip & Aura Effect
   function initAvatarSwitcher() {
     const avatarSwitchBtn = document.getElementById('profile-avatar-switch');
     const imgMain = document.getElementById('avatar-img-main');
@@ -1562,8 +1539,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     avatarSwitchBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      playGlitchSound();
-      avatarFrame.classList.add('avatar-glitching');
+      
+      // Play a smooth chime sound instead of harsh glitch
+      playResonanceSound();
+      
+      // Add 3D holographic flip animation
+      avatarFrame.classList.add('avatar-morphing');
 
       setTimeout(() => {
         isEmblemActive = !isEmblemActive;
@@ -1574,14 +1555,6 @@ document.addEventListener('DOMContentLoaded', () => {
           auraEl.classList.add('aura-active');
           avatarFrame.classList.add('aura-frame-active');
           playAuraSurge();
-
-          // Create radiant expanding shockwave ripple around avatar frame
-          const shockwave = document.createElement('div');
-          shockwave.className = 'glitch-shockwave';
-          if (avatarFrame.parentElement) {
-            avatarFrame.parentElement.appendChild(shockwave);
-            setTimeout(() => shockwave.remove(), 750);
-          }
         } else {
           imgAlt.style.display = 'none';
           imgMain.style.display = 'block';
@@ -1589,11 +1562,11 @@ document.addEventListener('DOMContentLoaded', () => {
           avatarFrame.classList.remove('aura-frame-active');
           playHoverTick();
         }
-      }, 180);
+      }, 220);
 
       setTimeout(() => {
-        avatarFrame.classList.remove('avatar-glitching');
-      }, 450);
+        avatarFrame.classList.remove('avatar-morphing');
+      }, 500);
     });
   }
 
@@ -1603,12 +1576,18 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!container) return;
     
     container.innerHTML = '';
-
-    // Laser Scanner Opening Overlay
-    const scanLine = document.createElement('div');
-    scanLine.className = 'chart-scan-line';
-    container.appendChild(scanLine);
-    setTimeout(() => { scanLine.remove(); }, 1800);
+    
+    // Show loading skeleton placeholder while data fetches
+    const skeleton = document.createElement('div');
+    skeleton.className = 'github-grid-matrix';
+    skeleton.style.opacity = '0.3';
+    for (let i = 0; i < 24 * 7; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'contrib-cell lvl-0';
+      cell.style.animation = `skeletonPulse 1.2s ease-in-out ${(i % 24) * 30}ms infinite alternate`;
+      skeleton.appendChild(cell);
+    }
+    container.appendChild(skeleton);
     
     const grid = document.createElement('div');
     grid.className = 'github-grid-matrix';
@@ -1697,6 +1676,25 @@ document.addEventListener('DOMContentLoaded', () => {
     
     container.appendChild(grid);
     
+    // Animate: fade out skeleton, reveal real grid with wave effect
+    skeleton.style.transition = 'opacity 0.4s ease';
+    skeleton.style.opacity = '0';
+    setTimeout(() => { skeleton.remove(); }, 400);
+    
+    // Stagger the cell pop-in animation from left to right in a wave
+    const allCells = grid.querySelectorAll('.contrib-cell');
+    allCells.forEach((cell, idx) => {
+      cell.style.opacity = '0';
+      cell.style.animation = 'none';
+      const col = Math.floor(idx / 7);
+      const row = idx % 7;
+      const delay = col * 35 + row * 12;
+      setTimeout(() => {
+        cell.style.animation = `cellPopIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both`;
+        cell.style.animationDelay = '0ms';
+      }, delay);
+    });
+    
     const displayTotal = totalCommits > 0 ? totalCommits : computedTotal;
     const totalEl = document.getElementById('github-contrib-total');
     if (totalEl) {
@@ -1704,41 +1702,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 5B. Interactive Profile HUD scanner overlay
+  // 5B. Avatar HUD (disabled - clean minimal avatar)
   function initAvatarHUD() {
-    const avatarFrame = document.querySelector('.profile-avatar-frame');
-    if (!avatarFrame) return;
-
-    const hudContainer = document.createElement('div');
-    hudContainer.className = 'avatar-hud-overlay';
-    hudContainer.innerHTML = `
-      <div class="hud-scanner-ring"></div>
-      <div class="hud-scan-line"></div>
-      <div class="hud-meta hud-meta-top font-mono">SYS_OK: 200</div>
-      <div class="hud-meta hud-meta-bottom font-mono">DEV: ACTIVE</div>
-      <div class="hud-meta hud-meta-left font-mono">C5_D8</div>
-    `;
-    avatarFrame.appendChild(hudContainer);
-
-    avatarFrame.addEventListener('click', (e) => {
-      e.stopPropagation();
-      playSystemSweep(900, 300, 'sine', 0.6);
-      
-      avatarFrame.classList.add('hud-active');
-      
-      const consoleOutput = document.getElementById('console-output');
-      if (consoleOutput) {
-        const line = document.createElement('div');
-        line.className = 'console-line text-cyan-400 font-bold';
-        line.textContent = '>> [DIAGNOSTIC SCAN INITIATED ON USER_AVATAR]';
-        consoleOutput.appendChild(line);
-        consoleOutput.scrollTop = consoleOutput.scrollHeight;
-      }
-      
-      setTimeout(() => {
-        avatarFrame.classList.remove('hud-active');
-      }, 5000);
-    });
+    // HUD scanner overlay removed for cleaner aesthetic
   }
 
   // 5C. Parallax & Motion Engine (Scroll & Mouse parallax + 3D Card tilt)

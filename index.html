@@ -29,11 +29,7 @@
   <!-- Aesthetic Paper Grain Noise Overlay -->
   <div class="noise-overlay" aria-hidden="true"></div>
 
-  <!-- Custom Morphing Cursor -->
-  <div class="cursor-dot" id="cursor-dot"></div>
-  <div class="cursor-ring" id="cursor-ring"></div>
-
-  <!-- Background WebGL Shader (very subtle behind everything) -->
+  <!-- Background Interactive Canvas (Anti-Gravity Prism Sphere) -->
   <canvas id="gl-canvas"></canvas>
 
   <!-- Ambient Parallax Orbs -->
@@ -72,21 +68,20 @@
           <aside class="workspace-sidebar">
             
             <!-- Header Bio Card Module -->
-            <div class="module-box pt-4 relative" style="padding-top: 1rem;">
-              <div class="header-flex">
+            <div class="module-box header-bio-module pt-4 relative" style="padding-top: 1rem; overflow: visible;">
+              <div class="header-flex" style="position: relative;">
                 <div class="profile-avatar-frame-wrap relative">
                   <div class="profile-avatar-aura" id="profile-avatar-aura" aria-hidden="true"></div>
-                  <span class="profile-avatar-frame clickable-element" id="profile-avatar-switch" title="Click to switch avatar">
+                  <span class="profile-avatar-frame clickable-element" id="profile-avatar-switch" title="Click avatar or top button to switch">
                     <img id="avatar-img-main" src="images/profile.jpg" alt="Govind Tripathi Profile" class="avatar-img active">
                     <img id="avatar-img-alt" src="images/profile_alt.jpg" alt="Ashoka Lion Emblem" class="avatar-img" style="display:none;">
-                    <div class="avatar-switch-badge font-mono" id="avatar-switch-badge" title="Switch Avatar"><i class="fa-solid fa-arrows-rotate"></i></div>
                   </span>
                 </div>
                 
                 <div class="profile-details">
-                  <div class="theme-icon-indicator" id="theme-visual-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-half"><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/></svg>
-                  </div>
+                  <button class="theme-icon-indicator clickable-element" id="theme-visual-btn" title="Switch Avatar Profile" aria-label="Switch Avatar Profile">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-half"><path d="M12 2v20"/><path d="M12 2a10 10 0 0 0 0 20z" fill="currentColor"/></svg>
+                  </button>
                   <h1 class="profile-name">
                     <span class="inline-flex items-center gap-1.5">
                       Govind Tripathi
