@@ -2830,24 +2830,17 @@ body:not(.sound-muted) .eq-bar {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  max-height: calc(100vh - 4rem);
-  overflow-y: auto;
+  overflow: visible;
   padding-right: 0.35rem;
+  z-index: 50;
 }
 
-/* Sidebar scrollbar styling */
-.workspace-sidebar::-webkit-scrollbar {
-  width: 4px;
-}
-.workspace-sidebar::-webkit-scrollbar-track {
-  background: transparent;
-}
-.workspace-sidebar::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 2px;
-}
-.workspace-sidebar::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-cyan);
+@media (max-width: 1024px) {
+  .workspace-sidebar {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 /* GitHub Contribution Chart Cards */
@@ -3354,6 +3347,102 @@ body {
   75%, 100% {
     transform: scale(2);
     opacity: 0;
+  }
+}
+
+/* ==========================================================================
+   Comprehensive Responsive & Visibility Polish for All Devices
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .page-shell {
+    padding: 0 1.25rem;
+  }
+  
+  .side-rail {
+    display: none !important;
+  }
+  
+  .content-strip {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .content-main {
+    padding: 0;
+  }
+  
+  .split-workspace {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .terminal-status-bar {
+    position: fixed;
+    bottom: 12px;
+    width: 95%;
+    max-width: 95%;
+    padding: 6px 14px;
+    gap: 12px;
+    font-size: 0.65rem;
+  }
+
+  .github-hover-card {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 520px) {
+  .header-flex {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .header-controls-column {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+  }
+  
+  .console-box {
+    height: 240px;
+  }
+
+  .cta-actions {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .cta-pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .social-pills-row {
+    gap: 0.4rem;
+  }
+
+  .social-pill {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.65rem;
+  }
+  
+  .certifications-pills {
+    grid-template-columns: 1fr;
   }
 }
 
